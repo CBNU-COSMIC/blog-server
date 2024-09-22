@@ -10,9 +10,10 @@ git pull origin "your-branch"
 # 가상환경을 설정한다
 # 우리는 현재 python3.9 버전을 사용합니다
 python3.9 -m venv .
+source ./bin/activate
 
 # requirements.txt 내부의 파일을 다운받는다
-pip3 install requirements.txt
+pip3 install -r requirements.txt
 
 # 개발을 하고 requirements.txt를 저장한다
 pip3 freeze > requirements.txt
