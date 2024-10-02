@@ -1,5 +1,4 @@
-from fastapi import FastAPI, Form
-
+from fastapi import FastAPI
 app = FastAPI()
 
 @app.get("/")
