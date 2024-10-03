@@ -40,8 +40,6 @@ class User:
     def role(self) -> str:
         return self.__role
 
-        #re.match: 문자열과 패턴을 입력하면 그때마다 입력된 문자열과 패턴이 일치하는지 비교
-        #re.compile: 패턴을 객체형태로 저장해 놓고 문자열만 넣어주면 패턴에 맞는지 비교 ->여러번 사용 시 성능 최적화하기 좋음.
     @property
     def avatar(self) -> str:
         return self.__avatar
@@ -62,3 +60,12 @@ class User:
     def email(self) -> str:
         return self.__email
 
+    def _validate_student_number(self, student_number: str) -> None:
+        """
+        학번의 유효성을 검사합니다.
+        """
+        if student_number is None:
+            raise ValueError(f"현재 학번: None")
+
+        if User.student_number_regex.match(student_number) is None:
+            raise ValueError(f"현재 학번: {student_number}")
