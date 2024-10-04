@@ -1,6 +1,6 @@
+import datetime
 import logging
 import re
-from datetime import datetime
 
 
 class User:
