@@ -87,4 +87,15 @@ class User:
             raise ValueError("password가 regex를 만족하지 않음.")
         if count < satisfying_condition:
             raise ValueError("password가 regex를 만족하지 않음.")
+            
+    def _validate_student_number(self, student_number: str) -> None:
+        """
+        학번의 유효성을 검사합니다.
+        """
+        if student_number is None:
+            raise ValueError(f"현재 학번: None")
+
+        if User.student_number_regex.match(student_number) is None:
+            raise ValueError(f"현재 학번: {student_number}")
+
 
