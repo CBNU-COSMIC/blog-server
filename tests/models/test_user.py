@@ -38,6 +38,11 @@ class TestUser(TestCase):
     def test_invalid_user_creation(self):
         # Given
         test_cases = [
+            # name
+            ("test", None, "test", "test", "test", "test", "01012345678", "202000000", datetime.datetime.now(),
+             "test@test.com"),
+            ("test", "invalid_name", "test", "test", "test", "test", "01012345678", "202000000", datetime.datetime.now(),
+             "test@test.com"),
             # member_id
              ("test", "test", None, "test", "test", "test", "01012345678", "202000000", datetime.datetime.now(),
              "test@test.com"),
