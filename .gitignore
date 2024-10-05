@@ -33,5 +33,6 @@ poetry.lock
 # 로그 파일
 *.log
 
+
 #뭔지 모름
 lib64

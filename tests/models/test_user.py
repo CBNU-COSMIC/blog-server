@@ -11,7 +11,7 @@ class TestUser(TestCase):
         id = "test"
         name = "test"
         member_id = "test"
-        password = "test"
+        password = "test1234!"
         role = "test"
         avatar = "test"
         phone_number = "01012345678"
@@ -38,13 +38,22 @@ class TestUser(TestCase):
     def test_invalid_user_creation(self):
         # Given
         test_cases = [
-            ("test", "test", "test", "test", "test", "test", "01012345678", None, datetime.datetime.now(),
-             "test@test.com"),
-            ("test", "test", "test", "test", "test", "test", "01012345678", "invalid_number", datetime.datetime.now(),
-             "test@test.com"),
+            # member_id
              ("test", "test", None, "test", "test", "test", "01012345678", "202000000", datetime.datetime.now(),
              "test@test.com"),
              ("test", "test", "invalid_member_id", "test", "test", "test", "01012345678", "202000000", datetime.datetime.now(),
+             "test@test.com"),
+            # password
+            ("test", "test", "test", None, "test", "test", "01012345678", "202000000", datetime.datetime.now(),
+             "test@test.com"),
+            ("test", "test", "test", "invalid_password", "test", "test", "01012345678", "202000000",
+             datetime.datetime.now(), "test@test.com"),
+            ("test", "test", "test", "test1234", "test", "test", "01012345678", "202000000",
+             datetime.datetime.now(), "test@test.com"),
+            # student_number
+            ("test", "test", "test", "test", "test", "test", "01012345678", None, datetime.datetime.now(),
+             "test@test.com"),
+            ("test", "test", "test", "test", "test", "test", "01012345678", "invalid_number", datetime.datetime.now(),
              "test@test.com")
         ]
 
