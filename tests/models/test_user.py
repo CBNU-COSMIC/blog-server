@@ -41,6 +41,10 @@ class TestUser(TestCase):
             ("test", "test", "test", "test", "test", "test", "01012345678", None, datetime.datetime.now(),
              "test@test.com"),
             ("test", "test", "test", "test", "test", "test", "01012345678", "invalid_number", datetime.datetime.now(),
+             "test@test.com"),
+             ("test", "test", None, "test", "test", "test", "01012345678", "202000000", datetime.datetime.now(),
+             "test@test.com"),
+             ("test", "test", "invalid_member_id", "test", "test", "test", "01012345678", "202000000", datetime.datetime.now(),
              "test@test.com")
         ]
 
