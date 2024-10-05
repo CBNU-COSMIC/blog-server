@@ -3,20 +3,25 @@ import re
 
 
 class User:
-    student_number_regex = re.compile(r"^\d{6,11}$")
+    member_id_regex = re.compile(r"^[a-z0-9]+$")
+    
     password_regex_upper = re.compile(r"[A-Z]")
     password_regex_lower = re.compile(r"[a-z]")
     password_regex_digits = re.compile(r"\d")
     password_regex_special_word = re.compile(r'[!@#$%^&*()_+~`{}\[\]:;"\'<>,.?/\\|-]')
-
+    
+    student_number_regex = re.compile(r"^\d{6,11}$")
+    
     PASSWORD_VALIDATE_CONDITION_COUNT = 3
     PASSWORD_MIN_LENGTH = 8
     PASSWORD_MAX_LENGTH = 12
 
     def __init__(self, id: str, name: str, member_id: str, password: str, role: str, avatar: str, phone_number: str,
                  student_number: str, birth: datetime, email: str):
+        self._validate_member_id(member_id=member_id)
         self._validate_password(password=password)
-
+        self._validate_student_number(student_number=student_number)
+        
         self.__id = id
         self.__name = name
         self.__member_id = member_id
@@ -67,6 +72,16 @@ class User:
     @property
     def email(self) -> str:
         return self.__email
+      
+    def _validate_member_id(self, member_id: str) -> None:
+        """
+        아이디의 유효성을 검사합니다.
+        """
+        if member_id is None:
+            raise ValueError(f"현재 아이디: None")
+        
+        if User.member_id_regex.match(member_id) is None:
+            raise ValueError(f"현재 아이디: {member_id}")
 
     def _validate_password(self, password):
         """
