@@ -1,14 +1,17 @@
 import datetime
-import logging
 import re
 
 
 class User:
     student_number_regex = re.compile(r"^\d{6,11}$")
-    student_password_regex_upper=re.compile(r'[A-Z]')
-    student_password_regex_lower=re.compile(r'[a-z]')
-    student_password_regex_digits=re.compile(r'/d')
-    student_password_regex_special_word=re.compile(r'[!@#$%^&*()_+~`{}\[\]:;"\'<>,.?/\\|-]')
+    password_regex_upper = re.compile(r"[A-Z]")
+    password_regex_lower = re.compile(r"[a-z]")
+    password_regex_digits = re.compile(r"\d")
+    password_regex_special_word = re.compile(r'[!@#$%^&*()_+~`{}\[\]:;"\'<>,.?/\\|-]')
+
+    PASSWORD_VALIDATE_CONDITION_COUNT = 3
+    PASSWORD_MIN_LENGTH = 8
+    PASSWORD_MAX_LENGTH = 12
 
     def __init__(self, id: str, name: str, member_id: str, password: str, role: str, avatar: str, phone_number: str,
                  student_number: str, birth: datetime, email: str):
@@ -69,25 +72,25 @@ class User:
         """
         비밀번호의 유효성을 검사합니다.
         """
-        count = 0
-        satisfying_condition=3
         if password is None:
             raise ValueError(f"현재 비밀번호: None")
+        if not (User.PASSWORD_MIN_LENGTH < len(password) < User.PASSWORD_MAX_LENGTH):
+            raise ValueError(f"현재 비밀번호 길이: {len(password)}")
 
-        if User.student_password_regex_lower.search(password):
+        count = 0
+
+        if User.password_regex_lower.search(password):
             count += 1
-        if User.student_password_regex_upper.search(password):
+        if User.password_regex_upper.search(password):
             count += 1
-        if User.student_password_regex_digits.search(password):
+        if User.password_regex_digits.search(password):
             count += 1
-        if User.student_password_regex_special_word.search(password):
+        if User.password_regex_special_word.search(password):
             count += 1
 
-        if len(password) < 8 or len(password) > 12:
-            raise ValueError("password가 regex를 만족하지 않음.")
-        if count < satisfying_condition:
-            raise ValueError("password가 regex를 만족하지 않음.")
-            
+        if count < User.PASSWORD_VALIDATE_CONDITION_COUNT:
+            raise ValueError(f"현재 비밀번호: {password}")
+
     def _validate_student_number(self, student_number: str) -> None:
         """
         학번의 유효성을 검사합니다.
@@ -97,5 +100,3 @@ class User:
 
         if User.student_number_regex.match(student_number) is None:
             raise ValueError(f"현재 학번: {student_number}")
-
-
