@@ -1,13 +1,21 @@
-from datetime import datetime
+import datetime
 import re
 
 
 class User:
     student_number_regex = re.compile(r"^\d{6,11}$")
+    password_regex_upper = re.compile(r"[A-Z]")
+    password_regex_lower = re.compile(r"[a-z]")
+    password_regex_digits = re.compile(r"\d")
+    password_regex_special_word = re.compile(r'[!@#$%^&*()_+~`{}\[\]:;"\'<>,.?/\\|-]')
+
+    PASSWORD_VALIDATE_CONDITION_COUNT = 3
+    PASSWORD_MIN_LENGTH = 8
+    PASSWORD_MAX_LENGTH = 12
 
     def __init__(self, id: str, name: str, member_id: str, password: str, role: str, avatar: str, phone_number: str,
                  student_number: str, birth: datetime, email: str):
-        self._validate_student_number(student_number=student_number)
+        self._validate_password(password=password)
 
         self.__id = id
         self.__name = name
@@ -59,6 +67,29 @@ class User:
     @property
     def email(self) -> str:
         return self.__email
+
+    def _validate_password(self, password):
+        """
+        비밀번호의 유효성을 검사합니다.
+        """
+        if password is None:
+            raise ValueError(f"현재 비밀번호: None")
+        if not (User.PASSWORD_MIN_LENGTH < len(password) < User.PASSWORD_MAX_LENGTH):
+            raise ValueError(f"현재 비밀번호 길이: {len(password)}")
+
+        count = 0
+
+        if User.password_regex_lower.search(password):
+            count += 1
+        if User.password_regex_upper.search(password):
+            count += 1
+        if User.password_regex_digits.search(password):
+            count += 1
+        if User.password_regex_special_word.search(password):
+            count += 1
+
+        if count < User.PASSWORD_VALIDATE_CONDITION_COUNT:
+            raise ValueError(f"현재 비밀번호: {password}")
 
     def _validate_student_number(self, student_number: str) -> None:
         """
