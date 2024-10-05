@@ -11,7 +11,7 @@ class TestUser(unittest.TestCase):
         id = "test"
         name = "test"
         member_id = "test"
-        password = "test"
+        password = "test1234!"
         role = "test"
         avatar = "test"
         phone_number = "01012345678"
