@@ -3,6 +3,9 @@ import re
 
 
 class User:
+    name_regex_korean = re.compile(r"^[가-힣]+$")
+    name_regex_english = re.compile(r"^[a-zA-Z]+$")
+
     member_id_regex = re.compile(r"^[a-z0-9]+$")
     
     password_regex_upper = re.compile(r"[A-Z]")
@@ -18,6 +21,7 @@ class User:
 
     def __init__(self, id: str, name: str, member_id: str, password: str, role: str, avatar: str, phone_number: str,
                  student_number: str, birth: datetime, email: str):
+        self._validate_name(name=name)
         self._validate_member_id(member_id=member_id)
         self._validate_password(password=password)
         self._validate_student_number(student_number=student_number)
@@ -72,6 +76,16 @@ class User:
     @property
     def email(self) -> str:
         return self.__email
+    
+    def _validate_name(self, name: str) -> None:
+        """
+        이름의 유효성을 검사합니다.
+        """
+        if name is None:
+            raise ValueError(f"현재 이름: None")
+        
+        if not (self.name_regex_korean.match(name) or self.name_regex_english.match(name)):
+            raise ValueError(f"현재 이름: {name}")
       
     def _validate_member_id(self, member_id: str) -> None:
         """
