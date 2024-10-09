@@ -10,7 +10,6 @@ class Comment:
         self.__parent_id = parent_id
         self.__comment_date = comment_date
 
-
     @property
     def id(self) -> str:
         return self.__id
