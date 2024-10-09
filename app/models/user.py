@@ -14,6 +14,8 @@ class User:
     password_regex_special_word = re.compile(r'[!@#$%^&*()_+~`{}\[\]:;"\'<>,.?/\\|-]')
     
     student_number_regex = re.compile(r"^\d{6,11}$")
+
+    email_regex = re.compile(r"^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
     
     PASSWORD_VALIDATE_CONDITION_COUNT = 3
     PASSWORD_MIN_LENGTH = 8
@@ -25,6 +27,7 @@ class User:
         self._validate_member_id(member_id=member_id)
         self._validate_password(password=password)
         self._validate_student_number(student_number=student_number)
+        self._validate_email(email=email)
         
         self.__id = id
         self.__name = name
@@ -129,3 +132,13 @@ class User:
 
         if User.student_number_regex.match(student_number) is None:
             raise ValueError(f"현재 학번: {student_number}")
+        
+    def _validate_email(self, email: str) -> None:
+        """
+        이메일의 유효성을 검사합니다.
+        """
+        if email is None:
+            raise ValueError(f"현재 이메일: None")
+        
+        if User.email_regex.match(email) is None:
+            raise ValueError(f"현재 이메일: {email}")
