@@ -50,8 +50,12 @@ class TestPost(TestCase):
 
         # When
         comment = Comment(id=id, user_id=user_id, content=content, parent_id=parent_id, comment_date=comment_date)
-        comment.update_comment_date()
+        new_comment = comment.update_comment_date()
 
         # Then
-        self.assertIsNotNone(comment.comment_date)
-        self.assertAlmostEqual(comment.comment_date.timestamp(), datetime.now().timestamp(), delta=1)
+        self.assertNotEqual(comment,new_comment)
+        self.assertEqual(new_comment.id, id)
+        self.assertEqual(new_comment.user_id, user_id)
+        self.assertEqual(new_comment.content, content)
+        self.assertEqual(new_comment.parent_id, parent_id)
+        self.assertNotEqual(new_comment.comment_date, comment_date)
