@@ -60,6 +60,11 @@ class TestUser(TestCase):
              "test@test.com"),
             ("test", "test", "test", "test", "test", "test", "01012345678", "invalid_number", datetime.datetime.now(),
              "test@test.com")
+            # email
+            ("test", "test", "test", "test", "test", "test", "01012345678", "202000000", datetime.datetime.now(),
+             None),
+            ("test", "test", "test", "test", "test", "test", "01012345678", "202000000", datetime.datetime.now(),
+             "test@.com")
         ]
 
         # Expect
