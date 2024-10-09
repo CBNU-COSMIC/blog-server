@@ -33,3 +33,6 @@ class Comment:
     def __repr__(self):
         return (f"Comment(id={self.__id!r}, user_id={self.__user_id!r}, content={self.__content!r},"
                 f" parent_id={self.__parent_id!r}, comment_date={self.__comment_date!r})")
+
+    def update_comment_date(self) -> None:
+        self.__comment_date = datetime.datetime.now()

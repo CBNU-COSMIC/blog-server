@@ -38,3 +38,20 @@ class TestPost(TestCase):
         self.assertEqual(repr(comment),
                          f"Comment(id={id!r}, user_id={user_id!r}, content={content!r}, "
                          f"parent_id={parent_id!r}, comment_date={comment_date!r})")
+
+
+    def test_update_comment_date(self):
+        # Given
+        id = "1"
+        user_id = "2020000000"
+        content = "content"
+        parent_id = "0"
+        comment_date = datetime.now()
+
+        # When
+        comment = Comment(id=id, user_id=user_id, content=content, parent_id=parent_id, comment_date=comment_date)
+        comment.update_comment_date()
+
+        # Then
+        self.assertIsNotNone(comment.comment_date)
+        self.assertAlmostEqual(comment.comment_date.timestamp(), datetime.now().timestamp(), delta=1)
