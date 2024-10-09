@@ -140,5 +140,5 @@ class User:
         if email is None:
             raise ValueError(f"현재 이메일: None")
         
-        if User.email_regex(email) is None:
+        if User.email_regex.match(email) is None:
             raise ValueError(f"현재 이메일: {email}")
