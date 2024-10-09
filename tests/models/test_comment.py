@@ -5,6 +5,7 @@ from app.models.comment import Comment
 
 
 class TestPost(TestCase):
+
     def test_valid_comment_creation(self):
         # Given
         id = "1"
@@ -23,6 +24,18 @@ class TestPost(TestCase):
         self.assertEqual(comment.parent_id, parent_id)
         self.assertEqual(comment.comment_date, comment_date)
 
+    def test_invalid_comment_creation(self):
+        # Given
+        test_cases = [
+            ("1","2020000000","<html>","0",datetime.now()),
+            ("1", "2020000000", "", "0", datetime.now()),
+        ]
+
+        #Expect
+        for test_case in test_cases:
+            with self.assertRaises(ValueError):
+                Comment(*test_case)
+
     def test_comment_repr(self):
         # Given
         id = "1"
@@ -38,3 +51,4 @@ class TestPost(TestCase):
         self.assertEqual(repr(comment),
                          f"Comment(id={id!r}, user_id={user_id!r}, content={content!r}, "
                          f"parent_id={parent_id!r}, comment_date={comment_date!r})")
+
