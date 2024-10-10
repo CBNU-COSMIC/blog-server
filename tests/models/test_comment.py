@@ -47,9 +47,9 @@ class TestPost(TestCase):
         content = "content"
         parent_id = "0"
         comment_date = datetime.now()
+        comment = Comment(id=id, user_id=user_id, content=content, parent_id=parent_id, comment_date=comment_date)
 
         # When
-        comment = Comment(id=id, user_id=user_id, content=content, parent_id=parent_id, comment_date=comment_date)
         new_comment = comment.update_comment_date()
 
         # Then
