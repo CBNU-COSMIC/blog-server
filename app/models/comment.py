@@ -47,7 +47,8 @@ class Comment:
         if Comment.content_regex_not_script_or_tag.search(content) is not None:
             raise ValueError(f"현재 댓글: {content}")
 
-
-
-
-
+    def update_comment_date(self) -> "Comment":
+        """
+        댓글을 수정하면 작성일자를 변경합니다.
+        """
+        return Comment(self.id, self.user_id, self.content, self.parent_id, datetime.datetime.now())
