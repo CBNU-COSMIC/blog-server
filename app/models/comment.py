@@ -4,11 +4,12 @@ import re
 
 class Comment:
     content_regex_has_letter = re.compile('.*[a-zA-Z가-힣]+.*')
+
     def __init__(self, id: str, user_id: str, content: str, parent_id: str, comment_date: datetime):
-        self._validate_content(content = content)
+        self._validate_content(content=content)
         self.__id = id
         self.__user_id = user_id
-        self.__content = content = self._make_validate_content(content = content)
+        self.__content = self._make_validate_content(content=content)
         self.__parent_id = parent_id
         self.__comment_date = comment_date
 
@@ -46,8 +47,7 @@ class Comment:
         if Comment.content_regex_has_letter.match(content) is None:
             raise ValueError(f"현재 댓글: {content}")
 
-
-    def _make_validate_content(self, content : str) -> str:
+    def _make_validate_content(self, content: str) -> str:
         """
         댓글을 유효한 댓글로 변경합니다.
         """
