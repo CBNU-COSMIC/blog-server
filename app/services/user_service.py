@@ -2,6 +2,7 @@ import bcrypt
 
 from app.models.user import User
 
+
 def encrypt_password(user : User):
     """
     암호화된 비밀번호를 갖는 UserEntity 리턴하는 함수.
