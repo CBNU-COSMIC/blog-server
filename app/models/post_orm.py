@@ -4,7 +4,7 @@ from datetime import datetime
 
 Base = declarative_base()
 
-class PostORM(Base):
+class PostDAO(Base):
     __tablename__ = 'Post'
 
     id = Column(String, primary_key=True)
@@ -15,11 +15,10 @@ class PostORM(Base):
     board = Column(String)
     created_at = Column(DateTime)
 
-    def __init__(self, id: str, title: str, attribute: str, content: str, user_id: str, board: str, created_at: datetime):
-        self.id = id
-        self.title = title
-        self.attribute = attribute
-        self.content = content
-        self.user_id = user_id
-        self.board = board
-        self.created_at = created_at
+    def __repr__(self):
+        return f"<User(id={self.id}, title='{self.title}', attribute='{self.attribute}', content='{self.content}', user_id='{self.user_id}', board='{self.board}', created_at='{self.created_at}')>"
+
+    def __eq__(self, other):
+        if isinstance(other, PostDAO):
+            return self.id == other.id and self.title == other.title and self.attribute == other.attribute and self.content == other.content and self.user_id == other.user_id and self.board == other.board and self.created_at == other.created_at
+        return False
