@@ -4,7 +4,7 @@ import datetime
 
 Base = declarative_base()
 
-class CommentDAO(Base):
+class CommentEntity(Base):
     __tablename__ = 'Comment'
 
     id = Column(String, primary_key=True)
@@ -15,8 +15,3 @@ class CommentDAO(Base):
 
     def __repr__(self):
         return f"<User(id={self.id}, user_id='{self.user_id}', content='{self.content}', parent_id='{self.parent_id}', comment_date='{self.comment_date}')>"
-
-    def __eq__(self, other):
-        if isinstance(other, CommentDAO):
-            return self.id == other.id and self.user_id == other.user_id and self.content == other.content and self.parent_id == other.parent_id and self.comment_date == other.comment_date
-        return False
