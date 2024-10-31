@@ -79,6 +79,10 @@ class User:
     @property
     def email(self) -> str:
         return self.__email
+
+    @password.setter
+    def password(self, password : str):
+        self.__password = password
     
     def _validate_name(self, name: str) -> None:
         """
