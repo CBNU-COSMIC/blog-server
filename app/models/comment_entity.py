@@ -14,4 +14,7 @@ class CommentEntity(Base):
     comment_date = Column(DateTime)
 
     def __repr__(self):
+        """
+        Comment entity 필드값들을 리턴합니다.
+        """
         return f"<User(id={self.id}, user_id='{self.user_id}', content='{self.content}', parent_id='{self.parent_id}', comment_date='{self.comment_date}')>"
