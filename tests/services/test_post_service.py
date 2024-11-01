@@ -2,7 +2,6 @@ from unittest import TestCase
 
 from app.services.post_service import create_post
 
-
 class TestPostService(TestCase):
 
     def test_create_post(self):

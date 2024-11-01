@@ -11,7 +11,7 @@ class CommentEntity(Base):
     content = Column(String(1000), nullable=False)
     post_id = Column(Integer, ForeignKey('Post.id'), nullable=False)
     parent_id = Column(Integer, ForeignKey('Comment.id'))
-    comment_date = Column(DateTime)
+    created_at = Column(DateTime)
 
     def __repr__(self):
         """

@@ -56,7 +56,7 @@ class TestPost(TestCase):
         # Expect
         for test_case in test_cases:
             with self.assertRaises(ValueError):
-                Post(*test_case)
+                PostCreateDTO(*test_case)
 
     def test_post_creation_with_html_tags_in_title(self):
         # Given
@@ -75,7 +75,7 @@ class TestPost(TestCase):
         self.assertNotIn("<", post.title)
         self.assertNotIn(">", post.title)
 
-    def test_post_creation_with_html_tags_in_title(self):
+    def test_post_creation_with_html_tags_in_content(self):
         # Given
         post_id = "1"
         title = "title"
@@ -91,3 +91,4 @@ class TestPost(TestCase):
         # Then
         self.assertNotIn("<", post.title)
         self.assertNotIn(">", post.title)
+
