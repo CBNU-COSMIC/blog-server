@@ -2,11 +2,12 @@ import datetime
 import re
 
 
-class CommentCreateDTO:
+class Comment:
     content_regex_has_letter = re.compile('.*[a-zA-Z가-힣]+.*')
 
-    def __init__(self, id: str, user_id: str, content: str, parent_id: str, comment_date: datetime):
+    def __init__(self, id: int, user_id: int, content: str, parent_id: int, comment_date: datetime):
         self._validate_content(content=content)
+
         self.__id = id
         self.__user_id = user_id
         self.__content = self._make_validate_content(content=content)
@@ -44,7 +45,7 @@ class CommentCreateDTO:
         if content is None:
             raise ValueError(f"현재 댓글: {content}")
 
-        if CommentCreateDTO.content_regex_has_letter.match(content) is None:
+        if Comment.content_regex_has_letter.match(content) is None:
             raise ValueError(f"현재 댓글: {content}")
 
     def _make_validate_content(self, content: str) -> str:
@@ -53,8 +54,8 @@ class CommentCreateDTO:
         """
         return content.replace('<', '&lt;').replace('>', '&gt;')
 
-    def update_comment_date(self) -> "CommentCreateDTO":
+    def update_comment_date(self) -> "Comment":
         """
         댓글을 수정하면 작성일자를 변경합니다.
         """
-        return CommentCreateDTO(self.id, self.user_id, self.content, self.parent_id, datetime.datetime.now())
+        return Comment(self.id, self.user_id, self.content, self.parent_id, datetime.datetime.now())

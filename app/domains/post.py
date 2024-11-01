@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 from datetime import datetime
 
 
-class PostCreateDTO:
-    def __init__(self, id: str | None, title: str, content: str, member_id: int, board_id: int,
+class Post:
+    def __init__(self, id: int | None, title: str, content: str, member_id: int, board_id: int,
                  created_at: datetime):
         self._validate_title(title=title)
         self._validate_content(content=content)
