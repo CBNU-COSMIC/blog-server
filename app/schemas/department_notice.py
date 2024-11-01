@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 class DepartmentNotice:
     def __init__(self, title: str, created_date: datetime, link: str):
         self.__title = title
