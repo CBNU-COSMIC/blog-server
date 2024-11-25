@@ -9,6 +9,7 @@ from app.domains.comment import Comment
 def create_comment(user_id: int, post_id: int, content: str, db: Session) -> None:
     """
     댓글을 생성합니다.
+    TODO:
     """
     comment = Comment(id=None, user_id=user_id, post_id=post_id, content=content, parent_id=None,
                       created_at=datetime.now())
