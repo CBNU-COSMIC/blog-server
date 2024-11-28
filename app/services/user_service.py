@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.crud import user_crud
-from app.crud.user_crud import get_user_by_student_number, delete_user_by_id, get_user_by_id
+from app.crud.user_crud import delete_user_by_id, get_user_by_member_id
 from app.domains.user import User
 
 
@@ -35,7 +35,7 @@ def validate_duplicate_user(db: Session, user_id: str) -> None:
     """
     중복된 회원이 있는지 확인하는 함수.
     """
-    existing_user = get_user_by_id(db, user_id)
+    existing_user = get_user_by_member_id(db, user_id)
 
     if existing_user:
         raise HTTPException(
