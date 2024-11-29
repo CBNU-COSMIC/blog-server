@@ -21,8 +21,13 @@ def get_posts(boardId: str, page: int = 1, db: Session = Depends(get_db)) -> lis
 @router.get('/{postId}')
 def get_post(postId: int, db: Session = Depends(get_db)):
     post = post_service.get_post_by_id(post_id=postId, db=db)
+
+    post_type = 'content'
+    if post.board_id in ["school-notices", "department-notices", "sw-notices"]:
+        post_type = 'link'
+
     return PostReadDTO(title=post.title, content=post.content, author=post.member_id, date=post.created_at,
-                       hits=post.hits)
+                       hits=post.hits, type=post_type)
 
 
 @router.post('/')
