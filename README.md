@@ -10,7 +10,7 @@
 
 
 <p align="center">
-  <img width="50%" alt="스크린샷 2024-12-04 오후 2 01 23" src="https://github.com/user-attachments/assets/7cf363a2-8aa6-4c89-98ca-a5fc2b7cb72a">
+  <img width="80%" alt="스크린샷 2024-12-04 오후 2 01 23" src="https://github.com/user-attachments/assets/7cf363a2-8aa6-4c89-98ca-a5fc2b7cb72a">
 </p>
 
 <br>
@@ -39,7 +39,7 @@
 
 ### 서버 아키텍처
 <p align="center">
-  <img width="50%" src="https://github.com/user-attachments/assets/05c6caf7-717d-4285-b55a-db956f5487d4">
+  <img width="60%" src="https://github.com/user-attachments/assets/05c6caf7-717d-4285-b55a-db956f5487d4">
 </p>
 
 <br>
@@ -59,7 +59,7 @@
 
 ### 문화
 <p align="center">
-<img width="50%" alt="스크린샷 2024-12-04 오후 2 35 24" src="https://github.com/user-attachments/assets/3d5d7569-0523-4327-b882-da5754d3d8e6">
+<img width="70%" alt="스크린샷 2024-12-04 오후 2 35 24" src="https://github.com/user-attachments/assets/3d5d7569-0523-4327-b882-da5754d3d8e6">
 </p>
 
 - 코드 리뷰: Merge 전 팀장의 코드 리뷰와 수정을 거쳐야 합니다.
