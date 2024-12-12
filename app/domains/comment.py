@@ -3,7 +3,6 @@ import re
 
 
 class Comment:
-    content_regex_has_letter = re.compile('.*[a-zA-Z가-힣]+.*')
 
     def __init__(self, id: int, user_id: int, content: str, post_id: int, parent_id: int, created_at: datetime):
         self._validate_content(content=content)
@@ -48,9 +47,6 @@ class Comment:
         댓글의 유효성을 검사합니다.
         """
         if content is None:
-            raise ValueError(f"현재 댓글: {content}")
-
-        if Comment.content_regex_has_letter.match(content) is None:
             raise ValueError(f"현재 댓글: {content}")
 
     def _make_validate_content(self, content: str) -> str:

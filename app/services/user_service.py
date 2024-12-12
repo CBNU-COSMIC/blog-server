@@ -58,6 +58,7 @@ def validate_duplicate_nickname(db: Session, nickname: str) -> None:
             detail="이미 존재하는 닉네임입니다."
         )
 
+
 def encrypt_password(user: User):
     """
     암호화된 비밀번호를 갖는 UserEntity 리턴하는 함수.
@@ -75,3 +76,28 @@ def withdraw_user(db: Session, user_id: int) -> None:
     @:param user_id: 탈퇴할 사용자의 ID
     """
     delete_user_by_id(db, user_id)
+
+
+def update_user(db: Session, user_id: int, nickname: str, email: str, username: str, birth: datetime,
+                phone: str) -> None:
+    """
+    사용자 정보를 업데이트하는 함수.
+    """
+    user = user_crud.get_user_by_id(db, user_id)
+
+    if user.nickname != nickname:
+        validate_duplicate_nickname(db=db, nickname=nickname)
+
+    user_crud.update_user(db=db, user=User(
+        id=user.id,
+        name=username,
+        nickname=nickname,
+        member_id=user.member_id,
+        password=user.password,
+        role=user.role,
+        avatar=user.avatar,
+        phone_number=phone,
+        student_number=user.student_number,
+        birth=birth,
+        email=email
+    ))
