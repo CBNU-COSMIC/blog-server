@@ -60,3 +60,10 @@ def get_user_by_nickname(db: Session, nickname: str) -> User:
 def get_users(db: Session):
     user_entities = db.query(UserEntity).all()
     return [convert_to_user(user_entity) for user_entity in user_entities]
+
+
+def update_user_role(db: Session, nickname: str, role: str) -> None:
+    user_entity = db.query(UserEntity).filter(UserEntity.nickname == nickname).first()
+    if user_entity:
+        user_entity.role = role
+        db.commit()
