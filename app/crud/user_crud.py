@@ -55,3 +55,8 @@ def delete_user_by_id(db: Session, id: int) -> None:
 def get_user_by_nickname(db: Session, nickname: str) -> User:
     user_entity = db.query(UserEntity).filter(UserEntity.nickname == nickname).first()
     return convert_to_user(user_entity) if user_entity else None
+
+
+def get_users(db: Session):
+    user_entities = db.query(UserEntity).all()
+    return [convert_to_user(user_entity) for user_entity in user_entities]
