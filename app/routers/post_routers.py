@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Request, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.schemas.post.post_create_dto import PostCreateDTO
@@ -25,6 +25,13 @@ def get_post(postId: int, db: Session = Depends(get_db)):
 @router.post('/')
 def create_post(request: Request, post_create_dto: PostCreateDTO, db: Session = Depends(get_db)):
     user = request.state.user
+
+    if post_create_dto.board_id == 'cosmic' and user['role'] not in ['executive', 'president']:
+        raise HTTPException(
+            status_code=403,
+            detail="권한이 없습니다."
+        )
+
     return post_service.create_post(user_id=user['user_id'], title=post_create_dto.title,
                                     content=post_create_dto.content,
                                     board_id=post_create_dto.board_id, db=db)
