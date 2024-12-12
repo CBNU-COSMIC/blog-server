@@ -47,4 +47,4 @@ def update_post(request: Request, postId: int, post_update_dto: PostUpdateDTO, d
 @router.delete('/{postId}')
 def delete_post(request: Request, postId: int, db: Session = Depends(get_db)):
     user = request.state.user
-    return post_service.delete_post(user_id=user['username'], post_id=postId, db=db)
+    return post_service.delete_post(user_id=user['username'], role=user['role'], post_id=postId, db=db)
