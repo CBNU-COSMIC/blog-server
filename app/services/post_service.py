@@ -1,9 +1,11 @@
 from datetime import datetime
 
+from pytz import timezone
 from sqlalchemy.orm import Session
 
-from app.crud import post_crud
+from app.crud import post_crud, comment_crud
 from app.domains.post import Post
+from app.schemas.post.posts_read_dto import PostsReadDTO
 
 
 def create_post(user_id: int, title: str, content: str, board_id: str, db: Session) -> Post:
@@ -16,8 +18,8 @@ def create_post(user_id: int, title: str, content: str, board_id: str, db: Sessi
     @:param board_id 게시판의 식별자
     @:return created_post 저장된 게시글
     """
-    post = Post(id=None, title=title, content=content, member_id=user_id, board_id=board_id, created_at=datetime.now(),
-                hits=0)
+    post = Post(id=None, title=title, content=content, member_id=user_id, board_id=board_id,
+                created_at=datetime.now(timezone('Asia/Seoul')), hits=0)
     post_crud.create_post(db=db, post=post)
 
 
@@ -37,6 +39,7 @@ def delete_post(user_id: int, post_id: int, db: Session) -> None:
     게시글을 삭제합니다.
     """
     post = post_crud.get_post_by_id(db=db, post_id=post_id)
+    print(post.member_id, user_id)
     if post and post.member_id == user_id:
         post_crud.delete_post(db=db, post_id=post_id)
     else:
@@ -47,7 +50,19 @@ def get_posts_by_board_id(board_id: str, page: int, db: Session) -> list:
     """
     게시판의 게시글 목록을 조회합니다.
     """
-    return post_crud.get_posts_by_board_id(db=db, board_id=board_id, page=page)
+    posts = post_crud.get_posts_by_board_id(db=db, board_id=board_id, page=page)
+    return [
+        PostsReadDTO(
+            post_id=post.id,
+            title=post.title,
+            author=post.member_id,
+            date=post.created_at,
+            hits=post.hits,
+            type=post.board_id,
+            comment_count=comment_crud.get_comments_count_by_post_id(db=db, post_id=post.id)
+        )
+        for post in posts
+    ]
 
 
 def get_post_by_id(post_id: int, db: Session) -> Post:

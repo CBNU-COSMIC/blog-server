@@ -9,4 +9,3 @@ class PostReadDTO(BaseModel):
     author: str
     date: datetime
     hits: int
-    type: str

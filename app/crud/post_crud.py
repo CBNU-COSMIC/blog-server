@@ -51,7 +51,7 @@ def get_posts_by_board_id(db: Session, board_id: str, page: int = 1) -> list[Pos
 
     saved_post_entities = (
         db.query(PostEntity, UserEntity.nickname.label("nickname"))
-        .join(UserEntity, PostEntity.member_id == UserEntity.id)
+        .join(UserEntity, PostEntity.member_id == UserEntity.id, isouter=True)
         .filter(PostEntity.board_id == board_id)
         .order_by(PostEntity.created_at.desc())
         .offset(offset)
