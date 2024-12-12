@@ -58,7 +58,7 @@ def get_posts_by_board_id(board_id: str, page: int, db: Session) -> list:
             author=post.member_id,
             date=post.created_at,
             hits=post.hits,
-            type=post.board_id,
+            type='content' if post.board_id not in ['sw', 'cbnu', 'cse'] else 'link',
             comment_count=comment_crud.get_comments_count_by_post_id(db=db, post_id=post.id)
         )
         for post in posts

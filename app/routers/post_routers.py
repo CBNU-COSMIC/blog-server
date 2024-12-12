@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session
 from app.schemas.post.post_create_dto import PostCreateDTO
 from app.schemas.post.post_read_dto import PostReadDTO
 from app.schemas.post.post_update_dto import PostUpdateDTO
-from app.schemas.post.posts_read_dto import PostsReadDTO
 from app.services import post_service
 from databases import get_db
 
