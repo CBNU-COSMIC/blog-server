@@ -20,7 +20,7 @@ def create_comment(db: Session, comment: Comment):
 
 def get_comments_by_post_id(db: Session, post_id: int) -> list[Comment]:
     saved_comment_entities = (
-        db.query(CommentEntity, UserEntity.name.label("member_name"))
+        db.query(CommentEntity, UserEntity.nickname.label("nickname"))
         .join(UserEntity, CommentEntity.user_id == UserEntity.id)
         .filter(CommentEntity.post_id == post_id)
         .order_by(CommentEntity.created_at.asc())
@@ -28,7 +28,7 @@ def get_comments_by_post_id(db: Session, post_id: int) -> list[Comment]:
     )
 
     comment_entities = []
-    for comment_entity, member_name in saved_comment_entities:  # 튜플 언패킹
+    for comment_entity, member_name in saved_comment_entities:
         comment_entities.append(
             Comment(
                 id=comment_entity.id,
@@ -45,6 +45,10 @@ def get_comments_by_post_id(db: Session, post_id: int) -> list[Comment]:
 def get_comments_by_id(comment_id: int, db: Session) -> Comment:
     comment_entity = db.query(CommentEntity).get(comment_id)
     return convert_to_comment(comment_entity)
+
+
+def get_comments_count_by_post_id(db: Session, post_id: int) -> int:
+    return db.query(CommentEntity).filter(CommentEntity.post_id == post_id).count()
 
 
 def update_comment(db: Session, comment: Comment):

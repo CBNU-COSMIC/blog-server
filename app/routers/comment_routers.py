@@ -13,8 +13,9 @@ router = APIRouter(prefix="/api/comments")
 @router.get("/")
 def get_comments(postId: int, db: Session = Depends(get_db)):
     comments = comment_service.get_comments_by_post_id(post_id=postId, db=db)
-    return [CommentsReadDTO(author=comment.user_id, content=comment.content, date=comment.created_at) for comment in
-            comments]
+    return [
+        CommentsReadDTO(comment_id=comment.id, author=comment.user_id, content=comment.content, date=comment.created_at)
+        for comment in comments]
 
 
 @router.post("/")
