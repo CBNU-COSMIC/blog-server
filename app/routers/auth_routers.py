@@ -3,6 +3,7 @@ from uuid import uuid4
 from fastapi import APIRouter, Depends, Request, Response
 from sqlalchemy.orm import Session
 
+from app.schemas.auth.auth_password_dto import AuthPasswordDTO
 from app.schemas.auth.sign_in_dto import SignInDTO
 from app.schemas.user.user_create_dto import UserCreateDTO
 from app.schemas.user.user_info_dto import UserInfoDTO
@@ -44,3 +45,9 @@ def sign_out(response: Response) -> None:
 def get_user(request: Request) -> UserInfoDTO:
     user = request.state.user
     return UserInfoDTO(username=user['username'], role=user['role'])
+
+
+@router.post('/password')
+def check_password(request: Request, password: AuthPasswordDTO, db: Session = Depends(get_db)) -> None:
+    user = request.state.user
+    auth_service.check_password(user_id=user['user_id'], password=password.password, db=db)
