@@ -22,3 +22,13 @@ def sign_in(user_id: str, password: str, db: Session) -> SignInInfoDTO:
         )
 
     return SignInInfoDTO(user_id=user.id, username=user.nickname, role=user.role)
+
+
+def check_password(user_id: str, password: str, db) -> None:
+    user = user_crud.get_user_by_id(db, user_id)
+
+    if not bcrypt.checkpw(password.encode('utf-8'), user.password.encode('utf-8')):
+        raise HTTPException(
+            status_code=401,
+            detail="비밀번호가 일치하지 않습니다."
+        )
