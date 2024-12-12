@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, Request, HTTPException
 from sqlalchemy.orm import Session
 
 from app.schemas.user.user_read_dto import UserReadDTO
+from app.schemas.user.user_role_update_dto import UserRoleUpdateDto
 from app.schemas.user.user_update_dto import UserUpdateDTO
 from app.schemas.user.users_read_dto import UsersReadDTO
 from app.services import user_service
@@ -72,3 +73,15 @@ def update_user(request: Request, user_update_dto: UserUpdateDTO, db: Session = 
                              email=user_update_dto.email,
                              username=user_update_dto.username, birth=user_update_dto.birth,
                              phone=user_update_dto.phone)
+
+
+@router.put('/{nickname}/role')
+def update_user_role(request: Request, nickname: str, role: UserRoleUpdateDto, db: Session = Depends(get_db)) -> None:
+    user = request.state.user
+    if user['role'] != 'president':
+        raise HTTPException(
+            status_code=403,
+            detail="권한이 없습니다."
+        )
+
+    user_service.update_user_role(db=db, nickname=nickname, role=role.role)

@@ -122,3 +122,10 @@ def get_user_by_nickname(db: Session, nickname: str) -> User:
     닉네임을 이용하여 사용자를 조회하는 함수.
     """
     return user_crud.get_user_by_nickname(db, nickname)
+
+
+def update_user_role(db: Session, nickname: str, role: str) -> None:
+    """
+    사용자의 권한을 변경하는 함수.
+    """
+    user_crud.update_user_role(db=db, nickname=nickname, role=role)
