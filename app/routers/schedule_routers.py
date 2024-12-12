@@ -35,4 +35,4 @@ def get_schedule(scheduleId: int, db: Session = Depends(get_db)):
 @router.delete('/{scheduleId}')
 def delete_schedule(request: Request, scheduleId: int, db: Session = Depends(get_db)):
     user = request.state.user
-    schedule_service.delete_schedule(nickname=user['username'], schedule_id=scheduleId, db=db)
+    schedule_service.delete_schedule(nickname=user['username'], role=user['role'], schedule_id=scheduleId, db=db)
