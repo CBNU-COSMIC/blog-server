@@ -72,7 +72,6 @@ def update_post(db: Session, title: str, content: str, post_id: int) -> None:
     post_entity = db.query(PostEntity).filter(PostEntity.id == post_id).first()
     post_entity.title = title
     post_entity.content = content
-    post_entity.created_at = datetime.now()
     db.commit()
 
 
