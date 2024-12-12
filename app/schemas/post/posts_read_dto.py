@@ -9,3 +9,5 @@ class PostsReadDTO(BaseModel):
     author: str
     date: datetime
     hits: int
+    type: str
+    comment_count: int

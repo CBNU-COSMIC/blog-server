@@ -1,3 +1,4 @@
+import re
 from typing import Optional
 
 from fastapi import Request, HTTPException, Response
@@ -9,8 +10,14 @@ async def auth_middleware(request: Request, call_next):
     if request.method == "OPTIONS":
         return Response(status_code=200)
 
-    exempt_paths = ["/api/auth/sign-up", "/api/auth/sign-in"]
-    if request.url.path in exempt_paths:
+    path = request.url.path
+    if path in ["/api/auth/sign-up", "/api/auth/sign-in"]:
+        return await call_next(request)
+
+    if path in ["/api/posts", "/api/posts/"] and request.method == "GET":
+        return await call_next(request)
+
+    if path.startswith("/api/schedules") and request.method == "GET":
         return await call_next(request)
 
     session_id = request.cookies.get("sid")
