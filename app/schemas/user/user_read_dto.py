@@ -1,10 +1,14 @@
-from app.domains.user import User
+from datetime import datetime
+
+from pydantic import BaseModel
 
 
-class UserReadDTO:
-    def __init__(self, user_entity: User):
-        self.__name = user_entity.name
-        self.__role = user_entity.role
-        self.__email = user_entity.email
-        self.__avatar = user_entity.avatar
-        self.__phone_number = user_entity.phone_number
+class UserReadDTO(BaseModel):
+    name: str
+    member_id: str
+    nickname: str
+    role: str
+    phone_number: str
+    student_number: str
+    birth: datetime
+    email: str
