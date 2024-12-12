@@ -34,4 +34,4 @@ def update_comment(request: Request, commentId: int, comment: CommentUpdateDTO, 
 @router.delete("/{commentId}")
 def delete_comment(request: Request, commentId: int, db: Session = Depends(get_db)):
     user = request.state.user
-    comment_service.delete_comment(user_id=user['user_id'], comment_id=commentId, db=db)
+    comment_service.delete_comment(user_id=user['user_id'], role=user['role'], comment_id=commentId, db=db)
