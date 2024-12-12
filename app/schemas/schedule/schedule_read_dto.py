@@ -8,3 +8,4 @@ class ScheduleReadDTO(BaseModel):
     content: str
     started_at: datetime
     ended_at: datetime
+    author: str

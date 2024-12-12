@@ -29,7 +29,7 @@ def get_schedules(db: Session = Depends(get_db)) -> list:
 def get_schedule(scheduleId: int, db: Session = Depends(get_db)):
     schedule = schedule_service.get_schedule_by_id(schedule_id=scheduleId, db=db)
     return ScheduleReadDTO(title=schedule.title, content=schedule.content,
-                           started_at=schedule.started_at, ended_at=schedule.ended_at)
+                           started_at=schedule.started_at, ended_at=schedule.ended_at, author=schedule.member_id)
 
 
 @router.delete('/{scheduleId}')
