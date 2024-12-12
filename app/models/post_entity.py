@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, DateTime, ForeignKey, Integer
+from sqlalchemy import Column, String, DateTime, ForeignKey, Integer, Text
 
 from config.db_config import Base
 
@@ -8,7 +8,7 @@ class PostEntity(Base):
 
     id = Column(Integer, primary_key=True)
     title = Column(String(50), nullable=False)
-    content = Column(String(1000), nullable=False)
+    content = Column(Text, nullable=False)
     member_id = Column(Integer, ForeignKey('Member.id'), nullable=True)
     board_id = Column(String(50), nullable=False)
     created_at = Column(DateTime)
