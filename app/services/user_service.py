@@ -108,3 +108,17 @@ def get_users(db: Session):
     모든 사용자를 조회하는 함수.
     """
     return user_crud.get_users(db)
+
+
+def get_user_by_id(db: Session, user_id: int) -> User:
+    """
+    ID를 이용하여 사용자를 조회하는 함수.
+    """
+    return user_crud.get_user_by_id(db, user_id)
+
+
+def get_user_by_nickname(db: Session, nickname: str) -> User:
+    """
+    닉네임을 이용하여 사용자를 조회하는 함수.
+    """
+    return user_crud.get_user_by_nickname(db, nickname)
