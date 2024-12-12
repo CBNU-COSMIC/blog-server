@@ -51,11 +51,12 @@ def get_posts_by_board_id(board_id: str, page: int, db: Session) -> list:
     게시판의 게시글 목록을 조회합니다.
     """
     posts = post_crud.get_posts_by_board_id(db=db, board_id=board_id, page=page)
+
     return [
         PostsReadDTO(
             post_id=post.id,
             title=post.title,
-            author=post.member_id,
+            author=post.member_id if post.member_id else '',
             date=post.created_at,
             hits=post.hits,
             type='content' if post.board_id not in ['sw', 'cbnu', 'cse'] else 'link',
