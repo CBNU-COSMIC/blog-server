@@ -101,3 +101,10 @@ def update_user(db: Session, user_id: int, nickname: str, email: str, username: 
         birth=birth,
         email=email
     ))
+
+
+def get_users(db: Session):
+    """
+    모든 사용자를 조회하는 함수.
+    """
+    return user_crud.get_users(db)
