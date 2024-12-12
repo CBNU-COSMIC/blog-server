@@ -18,6 +18,17 @@ def create_user(db: Session, user: User) -> None:
     db.commit()
 
 
+def update_user(db: Session, user: User) -> None:
+    user_entity = db.query(UserEntity).filter(UserEntity.id == user.id).first()
+    if user_entity:
+        user_entity.name = user.name
+        user_entity.nickname = user.nickname
+        user_entity.phone_number = user.phone_number
+        user_entity.birth = user.birth
+        user_entity.email = user.email
+        db.commit()
+
+
 def get_user_by_id(db: Session, id: int) -> User:
     """
     id를 이용하여 id에 해당하는 User를 찾습니다.
