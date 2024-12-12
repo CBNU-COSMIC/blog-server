@@ -72,7 +72,6 @@ def update_post(db: Session, title: str, content: str, post_id: int) -> None:
     post_entity = db.query(PostEntity).filter(PostEntity.id == post_id).first()
     post_entity.title = title
     post_entity.content = content
-    post_entity.created_at = datetime.now()
     db.commit()
 
 
@@ -86,3 +85,7 @@ def update_post_hits(db: Session, post_id: int) -> None:
     post_entity = db.query(PostEntity).filter(PostEntity.id == post_id).first()
     post_entity.hits += 1
     db.commit()
+
+
+def get_posts_count_by_board_id(db: Session, board_id: str) -> int:
+    return db.query(PostEntity).filter(PostEntity.board_id == board_id).count()
