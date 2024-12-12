@@ -71,3 +71,7 @@ def get_post_by_id(post_id: int, db: Session) -> Post:
     """
     post_crud.update_post_hits(db=db, post_id=post_id)
     return post_crud.get_post_by_id(db=db, post_id=post_id)
+
+
+def get_posts_count_by_board_id(board_id: str, db: Session):
+    return post_crud.get_posts_count_by_board_id(db=db, board_id=board_id)
