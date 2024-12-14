@@ -34,14 +34,16 @@ def update_comment(user_id: int, comment_id: int, content: str, db: Session) -> 
     comment_crud.update_comment(db=db, comment=saved_comment)
 
 
-def delete_comment(user_id: int, comment_id: int, db: Session) -> None:
+def delete_comment(user_id: int, role: str, comment_id: int, db: Session) -> None:
     """
     댓글을 삭제합니다.
     """
     comment = comment_crud.get_comments_by_id(comment_id=comment_id, db=db)
-    if comment.user_id != user_id:
-        raise ValueError("삭제 권한이 없습니다.")
-    comment_crud.delete_comment(db=db, comment_id=comment_id)
+
+    if role in ['executive', 'president'] or (comment and comment.user_id == user_id):
+        comment_crud.delete_comment(db=db, comment_id=comment_id)
+    else:
+        raise ValueError("댓글 삭제할 수 없습니다.")
 
 
 def get_comments_by_post_id(post_id: int, db: Session) -> list:

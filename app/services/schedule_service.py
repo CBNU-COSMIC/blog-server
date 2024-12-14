@@ -29,8 +29,9 @@ def get_schedule_by_id(schedule_id: int, db: Session) -> Schedule:
     return schedule_crud.get_schedule_by_id(db=db, schedule_id=schedule_id)
 
 
-def delete_schedule(nickname: int, schedule_id: int, db: Session) -> None:
+def delete_schedule(nickname: int, role: str, schedule_id: int, db: Session) -> None:
     schedule = get_schedule_by_id(schedule_id=schedule_id, db=db)
-    if schedule.member_id != nickname:
+    if role in ['executive', 'president'] or (schedule and schedule.member_id == nickname):
+        schedule_crud.delete_schedule(db=db, schedule_id=schedule_id)
+    else:
         raise HTTPException(status_code=401, detail='일정 삭제가 허용되지 않습니다.')
-    schedule_crud.delete_schedule(db=db, schedule_id=schedule_id)

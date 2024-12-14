@@ -6,6 +6,7 @@ from app.schemas.user.user_role_update_dto import UserRoleUpdateDto
 from app.schemas.user.user_update_dto import UserUpdateDTO
 from app.schemas.user.users_read_dto import UsersReadDTO
 from app.services import user_service
+from app.util.session_store import SessionStore
 from databases import get_db
 
 router = APIRouter(prefix='/api/users')
@@ -84,4 +85,5 @@ def update_user_role(request: Request, nickname: str, role: UserRoleUpdateDto, d
             detail="권한이 없습니다."
         )
 
+    SessionStore.update_role(nickname, role.role)
     user_service.update_user_role(db=db, nickname=nickname, role=role.role)

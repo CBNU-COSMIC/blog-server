@@ -13,3 +13,10 @@ class SessionStore:
     def delete(cls, session_id: str):
         if session_id in cls._store:
             del cls._store[session_id]
+
+    @classmethod
+    def update_role(cls, nickname: str, role: str):
+        for session_id, data in cls._store.items():
+            if data['username'] == nickname:
+                data['role'] = role
+                cls._store[session_id] = data
