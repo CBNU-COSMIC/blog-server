@@ -7,7 +7,7 @@ class PostEntity(Base):
     __tablename__ = 'Post'
 
     id = Column(Integer, primary_key=True)
-    title = Column(String(50), nullable=False)
+    title = Column(Text, nullable=False)
     content = Column(Text, nullable=False)
     member_id = Column(Integer, ForeignKey('Member.id'), nullable=True)
     board_id = Column(String(50), nullable=False)
