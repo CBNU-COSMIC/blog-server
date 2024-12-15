@@ -20,6 +20,9 @@ async def auth_middleware(request: Request, call_next):
     if path.startswith("/api/schedules") and request.method == "GET":
         return await call_next(request)
 
+    if path.startswith("/api/boards") and request.method == "GET":
+        return await call_next(request)
+
     session_id = request.cookies.get("sid")
     if not session_id:
         raise HTTPException(status_code=401, detail="Unauthorized: Missing session ID")
