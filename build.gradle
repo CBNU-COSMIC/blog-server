@@ -1,0 +1,52 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.4.1'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+allprojects {
+    group = 'org.cosmic'
+    version = '0.0.1-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply {
+        plugin 'java'
+        plugin 'org.springframework.boot'
+        plugin 'io.spring.dependency-management'
+    }
+
+    dependencies {
+        // spring
+        implementation 'org.springframework.boot:spring-boot-starter'
+
+        // lombok
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+
+        // test
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
+}
+
+project(':core') {
+    dependencies {
+    }
+}
+
+project(':api') {
+    dependencies {
+        implementation project(':core')
+    }
+}
+
+project(':crawl') {
+    dependencies {
+        implementation project(':core')
+    }
+}

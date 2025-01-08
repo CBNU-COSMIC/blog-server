@@ -1,0 +1,5 @@
+rootProject.name = 'cafe'
+
+include 'core'
+include 'api'
+include 'crawl'
