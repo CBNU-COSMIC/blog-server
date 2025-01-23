@@ -2,6 +2,7 @@ package org.cosmic.cafe.exception.type;
 
 import org.bee.metro.global.exception.ErrorCode;
 import org.springframework.http.HttpStatus;
+/* Springframework 의존성이 추가되지 않아서 import를 하지 못하는 것 같습니다.*/
 
 public class BadRequestException extends BusinessException {
 
