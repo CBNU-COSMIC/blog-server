@@ -1,0 +1,64 @@
+version: "3.8"
+
+services:
+  app:
+    image: minseokoh/blog-server
+    container_name: app
+    environment:
+      DB_HOST: host.docker.internal
+      DB_PORT: 3306
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: blog
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  crawler:
+    image: minseokoh/blog-crawler
+    container_name: crawler
+    environment:
+      DB_HOST: host.docker.internal
+      DB_PORT: 3306
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: blog
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: db
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: blog
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+
+#  nginx:
+#    image: nginx:1.21.5-alpine
+#    container_name: nginx
+#    depends_on:
+#      - app
+#    ports:
+#      - 80:80
+#      - 443:443
+#    volumes:
+#      - ./conf:/etc/nginx/conf.d
+#      - ./data/certbot/conf:/etc/letsencrypt
+#      - ./data/certbot/www:/var/www/certbot
+#    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+#
+#  certbot:
+#    image: certbot/certbot
+#    container_name: certbot
+#    depends_on:
+#      - nginx
+#    volumes:
+#      - ./data/certbot/conf:/etc/letsencrypt
+#      - ./data/certbot/www:/var/www/certbot
+#    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"

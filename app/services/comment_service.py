@@ -1,0 +1,53 @@
+from datetime import datetime
+
+from pytz import timezone
+from sqlalchemy.orm import Session
+
+from app.crud import comment_crud
+from app.domains.comment import Comment
+
+
+def create_comment(user_id: int, post_id: int, content: str, db: Session) -> None:
+    """
+    댓글을 생성합니다.
+    """
+    comment = Comment(id=None, user_id=user_id, post_id=post_id, content=content, parent_id=None,
+                      created_at=datetime.now(timezone('Asia/Seoul')))
+    comment_crud.create_comment(db=db, comment=comment)
+
+
+def update_comment(user_id: int, comment_id: int, content: str, db: Session) -> Comment:
+    """
+    댓글을 수정합니다.
+    """
+    comment = comment_crud.get_comments_by_id(comment_id=comment_id, db=db)
+    if comment.user_id != user_id:
+        raise ValueError("수정 권한이 없습니다.")
+    saved_comment = Comment(
+        id=comment.id,
+        user_id=comment.user_id,
+        content=content,
+        post_id=comment.post_id,
+        parent_id=comment.parent_id,
+        created_at=comment.created_at,
+    )
+    comment_crud.update_comment(db=db, comment=saved_comment)
+
+
+def delete_comment(user_id: int, role: str, comment_id: int, db: Session) -> None:
+    """
+    댓글을 삭제합니다.
+    """
+    comment = comment_crud.get_comments_by_id(comment_id=comment_id, db=db)
+
+    if role in ['executive', 'president'] or (comment and comment.user_id == user_id):
+        comment_crud.delete_comment(db=db, comment_id=comment_id)
+    else:
+        raise ValueError("댓글 삭제할 수 없습니다.")
+
+
+def get_comments_by_post_id(post_id: int, db: Session) -> list:
+    """
+    게시글의 댓글 목록을 조회합니다.
+    """
+    return comment_crud.get_comments_by_post_id(db=db, post_id=post_id)
