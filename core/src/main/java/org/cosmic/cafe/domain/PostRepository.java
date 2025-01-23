@@ -1,4 +1,4 @@
-package org.bee.metro.core.post.domain;
+package org.cosmic.cafe.domain;
 
 import java.util.List;
 
