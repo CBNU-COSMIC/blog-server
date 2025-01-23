@@ -1,9 +1,9 @@
-package org.bee.metro.core.post.entity;
+package org.cosmic.cafe.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
-import org.bee.metro.core.post.domain.Post;
+import org.cosmic.cafe.domain.Post;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
