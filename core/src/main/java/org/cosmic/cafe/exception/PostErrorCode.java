@@ -1,4 +1,4 @@
-package org.bee.metro.core.post.exception;
+package org.cosmic.cafe.exception;
 
 import org.bee.metro.global.exception.ErrorCode;
 
