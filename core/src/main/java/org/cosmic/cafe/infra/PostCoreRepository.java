@@ -1,9 +1,9 @@
-package org.bee.metro.core.post.infra;
+package org.cosmic.cafe.infra;
 
 import lombok.RequiredArgsConstructor;
-import org.bee.metro.core.post.domain.Post;
-import org.bee.metro.core.post.domain.PostRepository;
-import org.bee.metro.core.post.entity.PostEntity;
+import org.cosmic.cafe.domain.Post;
+import org.cosmic.cafe.domain.PostRepository;
+import org.cosmic.cafe.entity.PostEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
