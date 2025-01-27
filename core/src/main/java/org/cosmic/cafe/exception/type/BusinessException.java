@@ -1,6 +1,7 @@
-package org.bee.metro.global.exception.type;
+package org.cosmic.cafe.exception.type;
 
-import org.bee.metro.global.exception.ErrorCode;
+
+import org.cosmic.cafe.exception.ErrorCode;
 
 public class BusinessException extends RuntimeException {
 
