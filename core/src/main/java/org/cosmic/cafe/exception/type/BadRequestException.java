@@ -1,7 +1,7 @@
-package org.bee.metro.global.exception.type;
+package org.cosmic.cafe.exception.type;
 
-import org.bee.metro.global.exception.ErrorCode;
-import org.springframework.http.HttpStatus;
+import org.cosmic.cafe.exception.ErrorCode;
+import org.cosmic.cafe.exception.HttpStatus;
 
 public class BadRequestException extends BusinessException {
 

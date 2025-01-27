@@ -1,4 +1,4 @@
-package org.bee.metro.global.exception;
+package org.cosmic.cafe.exception;
 
 public interface ErrorCode {
     String getCode();
