@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.cosmic.cafe.domain.schedule.Color;
+import org.cosmic.cafe.domain.schedule.Schedule;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -40,5 +41,17 @@ public class ScheduleEntity {
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
         this.color = color;
+    }
+
+    public static ScheduleEntity of(Schedule schedule) {
+        return ScheduleEntity.builder()
+                .id(schedule.getId())
+                .title(schedule.getTitle())
+                .content(schedule.getContent())
+                .memberId(schedule.getMemberId())
+                .startDateTime(schedule.getStartDateTime())
+                .endDateTime(schedule.getEndDateTime())
+                .color(schedule.getColor())
+                .build();
     }
 }
