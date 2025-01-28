@@ -1,5 +1,6 @@
 package org.cosmic.cafe.domain.schedule;
 
+import lombok.Builder;
 import lombok.Getter;
 import org.cosmic.cafe.domain.schedule.exception.ScheduleErrorCode;
 import org.cosmic.cafe.exception.type.BadRequestException;
@@ -18,6 +19,7 @@ public class Schedule {
     private final LocalDateTime endDateTime;
     private final Color color;
 
+    @Builder
     public Schedule(UUID id, String title, String content, UUID memberId, LocalDateTime startDateTime, LocalDateTime endDateTime, Color color) {
         validateTitle(title);
         validateContent(content);
