@@ -39,13 +39,13 @@ public class Schedule {
     }
 
     private void validateTitle(String title) {
-        if (title.isEmpty() || title.isBlank()) {
+        if (title == null || title.isEmpty() || title.isBlank()) {
             throw new BadRequestException(ERROR_TITLE_IS_REQUIRED, ScheduleErrorCode.REQUIRED_VALUE);
         }
     }
 
     private void validateContent(String content) {
-        if (content.isEmpty() || content.isBlank()) {
+        if (content == null || content.isEmpty() || content.isBlank()) {
             throw new BadRequestException(ERROR_CONTENT_IS_REQUIRED, ScheduleErrorCode.REQUIRED_VALUE);
         }
     }
