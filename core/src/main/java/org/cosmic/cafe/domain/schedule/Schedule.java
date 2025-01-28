@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.cosmic.cafe.domain.schedule.exception.ScheduleErrorCode;
 import org.cosmic.cafe.exception.type.BadRequestException;
+import org.cosmic.cafe.infra.schedule.entity.ScheduleEntity;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -57,5 +58,17 @@ public class Schedule {
                     ScheduleErrorCode.INVALID_DATE_TIME
             );
         }
+    }
+
+    public static Schedule of(ScheduleEntity scheduleEntity) {
+        return Schedule.builder()
+                .id(scheduleEntity.getId())
+                .title(scheduleEntity.getTitle())
+                .content(scheduleEntity.getContent())
+                .memberId(scheduleEntity.getMemberId())
+                .startDateTime(scheduleEntity.getStartDateTime())
+                .endDateTime(scheduleEntity.getEndDateTime())
+                .color(scheduleEntity.getColor())
+                .build();
     }
 }
