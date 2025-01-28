@@ -92,4 +92,49 @@ public class ScheduleRepositoryTest extends RepositoryContext {
             assertThat(updatedSchedule.getTitle()).isEqualTo(updatedTitle);
         }
     }
+
+    @Nested
+    class findById_메서드는 {
+
+        @Test
+        void 해당_아이디가_존재하면_일정_객체를_반환한다() {
+            // given
+            String title = "title";
+            String content = "content";
+            UUID memberId = UUID.randomUUID();
+            LocalDateTime startDateTime = LocalDateTime.now();
+            LocalDateTime endDateTime = LocalDateTime.now().plusHours(1);
+            Color color = Color.RED;
+
+            Schedule savedSchedule = scheduleRepository.save(Schedule.builder()
+                    .title(title)
+                    .content(content)
+                    .memberId(memberId)
+                    .startDateTime(startDateTime)
+                    .endDateTime(endDateTime)
+                    .color(color)
+                    .build());
+
+            // when
+            Schedule foundSchedule = scheduleRepository.findById(savedSchedule.getId()).orElse(null);
+
+            // then
+            assertAll(
+                    () -> assertThat(foundSchedule).isNotNull(),
+                    () -> assertThat(foundSchedule.getId()).isEqualTo(savedSchedule.getId())
+            );
+        }
+
+        @Test
+        void 해당_아이디가_존재하지_않으면_null을_반환한다() {
+            // given
+            UUID id = UUID.randomUUID();
+
+            // when
+            Schedule foundSchedule = scheduleRepository.findById(id).orElse(null);
+
+            // then
+            assertThat(foundSchedule).isNull();
+        }
+    }
 }
