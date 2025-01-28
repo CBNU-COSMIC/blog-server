@@ -40,6 +40,6 @@ public class ScheduleCoreRepository implements ScheduleRepository {
 
     @Override
     public void deleteById(UUID id) {
-
+        scheduleJpaRepository.deleteById(id);
     }
 }
