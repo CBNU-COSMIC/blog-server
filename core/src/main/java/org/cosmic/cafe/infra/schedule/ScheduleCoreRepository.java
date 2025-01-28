@@ -31,7 +31,11 @@ public class ScheduleCoreRepository implements ScheduleRepository {
 
     @Override
     public List<Schedule> findAll() {
-        return List.of();
+        List<ScheduleEntity> scheduleEntities = scheduleJpaRepository.findAll();
+
+        return scheduleEntities.stream()
+                .map(Schedule::of)
+                .toList();
     }
 
     @Override
