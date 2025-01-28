@@ -45,6 +45,11 @@ public class Schedule {
     }
 
     private void validateDateTime(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-
+        if (startDateTime.isAfter(endDateTime)) {
+            throw new BadRequestException(
+                    "시작일시는 종료일시보다 이전이어야 합니다. 시작일시: %s, 종료일시: %s".formatted(startDateTime, endDateTime),
+                    ScheduleErrorCode.INVALID_DATE_TIME
+            );
+        }
     }
 }
