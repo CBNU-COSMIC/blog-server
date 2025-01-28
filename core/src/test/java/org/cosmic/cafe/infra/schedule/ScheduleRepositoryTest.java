@@ -177,4 +177,35 @@ public class ScheduleRepositoryTest extends RepositoryContext {
             assertThat(schedules.size()).isEqualTo(2);
         }
     }
+
+    @Nested
+    class deleteById_메서드는 {
+
+        @Test
+        void 해당_일정을_지운다() {
+            // given
+            String title = "title";
+            String content = "content";
+            UUID memberId = UUID.randomUUID();
+            LocalDateTime startDateTime = LocalDateTime.now();
+            LocalDateTime endDateTime = LocalDateTime.now().plusHours(1);
+            Color color = Color.RED;
+
+            Schedule savedSchedule = scheduleRepository.save(Schedule.builder()
+                    .title(title)
+                    .content(content)
+                    .memberId(memberId)
+                    .startDateTime(startDateTime)
+                    .endDateTime(endDateTime)
+                    .color(color)
+                    .build());
+
+            // when
+            scheduleRepository.deleteById(savedSchedule.getId());
+
+            // then
+            Schedule foundSchedule = scheduleRepository.findById(savedSchedule.getId()).orElse(null);
+            assertThat(foundSchedule).isNull();
+        }
+    }
 }
