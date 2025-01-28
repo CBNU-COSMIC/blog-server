@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -135,6 +136,45 @@ public class ScheduleRepositoryTest extends RepositoryContext {
 
             // then
             assertThat(foundSchedule).isNull();
+        }
+    }
+
+    @Nested
+    class findAll_메서드는 {
+
+        @Test
+        void 모든_일정_객체를_반환한다() {
+            // given
+            String title = "title";
+            String content = "content";
+            UUID memberId = UUID.randomUUID();
+            LocalDateTime startDateTime = LocalDateTime.now();
+            LocalDateTime endDateTime = LocalDateTime.now().plusHours(1);
+            Color color = Color.RED;
+
+            Schedule savedSchedule1 = scheduleRepository.save(Schedule.builder()
+                    .title(title)
+                    .content(content)
+                    .memberId(memberId)
+                    .startDateTime(startDateTime)
+                    .endDateTime(endDateTime)
+                    .color(color)
+                    .build());
+
+            Schedule savedSchedule2 = scheduleRepository.save(Schedule.builder()
+                    .title(title)
+                    .content(content)
+                    .memberId(memberId)
+                    .startDateTime(startDateTime)
+                    .endDateTime(endDateTime)
+                    .color(color)
+                    .build());
+
+            // when
+            List<Schedule> schedules = scheduleRepository.findAll();
+
+            // then
+            assertThat(schedules.size()).isEqualTo(2);
         }
     }
 }
