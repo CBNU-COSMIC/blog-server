@@ -3,6 +3,7 @@ package org.cosmic.cafe.infra.schedule;
 import lombok.RequiredArgsConstructor;
 import org.cosmic.cafe.domain.schedule.Schedule;
 import org.cosmic.cafe.domain.schedule.ScheduleRepository;
+import org.cosmic.cafe.infra.schedule.entity.ScheduleEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,7 +18,9 @@ public class ScheduleCoreRepository implements ScheduleRepository {
 
     @Override
     public Schedule save(Schedule schedule) {
-        return null;
+        ScheduleEntity scheduleEntity = ScheduleEntity.of(schedule);
+        ScheduleEntity savedScheduleEntity = scheduleJpaRepository.save(scheduleEntity);
+        return Schedule.of(savedScheduleEntity);
     }
 
     @Override
