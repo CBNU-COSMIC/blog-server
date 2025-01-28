@@ -25,7 +25,8 @@ public class ScheduleCoreRepository implements ScheduleRepository {
 
     @Override
     public Optional<Schedule> findById(UUID id) {
-        return Optional.empty();
+        Optional<ScheduleEntity> scheduleEntity = scheduleJpaRepository.findById(id);
+        return scheduleEntity.map(Schedule::of);
     }
 
     @Override
