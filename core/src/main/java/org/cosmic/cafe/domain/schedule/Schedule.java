@@ -1,6 +1,8 @@
 package org.cosmic.cafe.domain.schedule;
 
 import lombok.Getter;
+import org.cosmic.cafe.domain.schedule.exception.ScheduleErrorCode;
+import org.cosmic.cafe.exception.type.BadRequestException;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -31,11 +33,15 @@ public class Schedule {
     }
 
     private void validateTitle(String title) {
-
+        if (title.isEmpty() || title.isBlank()) {
+            throw new BadRequestException("제목은 필수 입력값입니다.", ScheduleErrorCode.REQUIRED_VALUE);
+        }
     }
 
     private void validateContent(String content) {
-
+        if (content.isEmpty() || content.isBlank()) {
+            throw new BadRequestException("내용은 필수 입력값입니다.", ScheduleErrorCode.REQUIRED_VALUE);
+        }
     }
 
     private void validateDateTime(LocalDateTime startDateTime, LocalDateTime endDateTime) {

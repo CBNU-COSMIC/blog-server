@@ -3,7 +3,7 @@ package org.cosmic.cafe.domain.schedule.exception;
 import org.cosmic.cafe.exception.ErrorCode;
 
 public enum ScheduleErrorCode implements ErrorCode {
-    ;
+    REQUIRED_VALUE("S001", "해당 값은 필수 입력 값입니다.");
 
     private final String code;
     private final String message;
