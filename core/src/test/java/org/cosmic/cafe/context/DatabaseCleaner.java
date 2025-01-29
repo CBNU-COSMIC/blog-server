@@ -5,6 +5,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Table;
 import java.util.List;
+
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +26,7 @@ public class DatabaseCleaner implements InitializingBean {
                 .toList();
     }
 
+    @Transactional
     public void clear() {
         entityManager.flush();
         entityManager.createNativeQuery("SET REFERENTIAL_INTEGRITY FALSE").executeUpdate();
