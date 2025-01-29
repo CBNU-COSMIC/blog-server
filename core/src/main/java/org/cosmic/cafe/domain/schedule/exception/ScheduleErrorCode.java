@@ -4,7 +4,9 @@ import org.cosmic.cafe.exception.ErrorCode;
 
 public enum ScheduleErrorCode implements ErrorCode {
     REQUIRED_VALUE("S001", "해당 값은 필수 입력 값입니다."),
-    INVALID_DATE_TIME("S002", "시작일시는 종료일시보다 이전이어야 합니다.");
+    INVALID_DATE_TIME("S002", "시작일시는 종료일시보다 이전이어야 합니다."),
+    NOT_FOUND("S003", "해당 일정이 존재하지 않습니다."),
+    DELETE_PERMISSION_DENIED("S004", "해당 일정을 삭제할 권한이 없습니다.");
 
     private final String code;
     private final String message;
