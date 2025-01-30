@@ -18,8 +18,9 @@ public class PostCoreRepository implements PostRepository {
 
     @Override
     public Post save(Post post){
-        return null;
-    }
+        PostEntity postEntity = PostEntity.from(post);
+        PostEntity saveedPostEntity = postJpaRepository.save(postEntity);
+        return Post.fromEntity(saveedPostEntity);    }
 
     @Override
     public Optional<Post> findById(UUID id){
