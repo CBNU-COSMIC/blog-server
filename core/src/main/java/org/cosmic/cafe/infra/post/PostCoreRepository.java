@@ -42,7 +42,7 @@ public class PostCoreRepository implements PostRepository {
 
     @Override
     public void deleteById(UUID id){
-
+        postJpaRepository.deleteById(id);
     }
 
 }
