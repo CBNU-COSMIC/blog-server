@@ -36,7 +36,8 @@ public class PostCoreRepository implements PostRepository {
 
     @Override
     public List<Post> findAll(){
-        return List.of();
+        List<PostEntity> postEntities = postJpaRepository.findAll();
+        return postEntities.stream().map(Post::fromEntity).toList();
     }
 
     @Override
