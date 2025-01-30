@@ -2,7 +2,9 @@ package org.cosmic.cafe.domain.post;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.cosmic.cafe.domain.post.exception.PostErrorCode;
 import org.cosmic.cafe.exception.type.BadRequestException;
+import org.cosmic.cafe.infra.post.entity.PostEntity;
 
 import java.util.UUID;
 
