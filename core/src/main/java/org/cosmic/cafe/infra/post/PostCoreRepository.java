@@ -30,7 +30,8 @@ public class PostCoreRepository implements PostRepository {
 
     @Override
     public List<Post> findByTitle(String title){
-        return List.of();
+        List<PostEntity> postEntities = postJpaRepository.findByTitle(title);
+        return postEntities.stream().map(Post::fromEntity).toList();
     }
 
     @Override
