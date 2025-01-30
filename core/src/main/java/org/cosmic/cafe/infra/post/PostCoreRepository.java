@@ -24,7 +24,8 @@ public class PostCoreRepository implements PostRepository {
 
     @Override
     public Optional<Post> findById(UUID id){
-        return Optional.empty();
+        Optional<PostEntity> postEntity = postJpaRepository.findById(id);
+        return postEntity.map(Post::fromEntity);
     }
 
     @Override
