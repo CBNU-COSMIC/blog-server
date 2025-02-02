@@ -1,0 +1,3 @@
+client:
+  allowed:
+    origins: https://cbnu-cosmic.org
