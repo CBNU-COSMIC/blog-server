@@ -1,6 +1,4 @@
-package org.cosmic.cafe.exception.type;
-
-import org.cosmic.cafe.exception.ErrorCode;
+package org.cosmic.cafe.exception;
 
 public enum ApiErrorCode implements ErrorCode {
     UNAUTHORIZED("A0001", "인증되지 않은 사용자입니다."),
