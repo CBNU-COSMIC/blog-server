@@ -1,6 +1,8 @@
 package org.cosmic.cafe.advice;
 
 import lombok.extern.slf4j.Slf4j;
+import org.cosmic.cafe.exception.type.AuthenticationException;
+import org.cosmic.cafe.exception.type.AuthorizationException;
 import org.cosmic.cafe.exception.ErrorResponse;
 import org.cosmic.cafe.exception.GlobalErrorCode;
 import org.cosmic.cafe.exception.type.BusinessException;
@@ -12,6 +14,29 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 public class GlobalAdvice {
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException exception) {
+        ErrorResponse errorResponse = ErrorResponse.of(exception.getErrorCode().getCode(), exception.getErrorCode().getMessage());
+
+        log.error("{}", exception);
+
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthorizationException(AuthorizationException exception) {
+        ErrorResponse errorResponse = ErrorResponse.of(exception.getErrorCode().getCode(), exception.getErrorCode().getMessage());
+
+        log.error("{}", exception);
+
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(errorResponse);
+    }
+
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException exception) {
