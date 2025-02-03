@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.cosmic.cafe.context.AuthenticationContext;
 import org.cosmic.cafe.dto.LoginPayload;
-import org.cosmic.cafe.exception.type.ApiErrorCode;
+import org.cosmic.cafe.exception.ApiErrorCode;
 import org.cosmic.cafe.exception.type.AuthorizationException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsUtils;
