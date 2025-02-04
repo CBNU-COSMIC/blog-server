@@ -1,7 +1,9 @@
 package org.cosmic.cafe.domain.comment.domain;
 
+import org.assertj.core.api.Assertions;
 import org.cosmic.cafe.domain.Comment.Comment;
 import org.cosmic.cafe.exception.type.BadRequestException;
+import org.cosmic.cafe.infra.comment.entity.CommentEntity;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -62,6 +64,35 @@ public class CommentTest {
                     Arguments.of(""),
                     Arguments.of("   ")
             );
+        }
+
+        @Nested
+        class of_메서드는 {
+
+            @Test
+            void CommentEntity를_받아_Comment로_변환한다() {
+                // given
+                UUID id = UUID.randomUUID();
+                UUID userId = UUID.randomUUID();
+                UUID postId = UUID.randomUUID();
+                String content = "test content";
+
+                CommentEntity entity = CommentEntity.builder()
+                        .id(id)
+                        .userId(userId)
+                        .postId(postId)
+                        .content(content)
+                        .build();
+
+                // when
+                Comment comment = Comment.of(entity);
+
+                // then
+                Assertions.assertThat(comment.getId()).isEqualTo(id);
+                Assertions.assertThat(comment.getUserId()).isEqualTo(userId);
+                Assertions.assertThat(comment.getPostId()).isEqualTo(postId);
+                Assertions.assertThat(comment.getContent()).isEqualTo(content);
+            }
         }
     }
 }
