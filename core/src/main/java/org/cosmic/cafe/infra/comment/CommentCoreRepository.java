@@ -3,6 +3,7 @@ package org.cosmic.cafe.infra.comment;
 import lombok.RequiredArgsConstructor;
 import org.cosmic.cafe.domain.Comment.Comment;
 import org.cosmic.cafe.domain.Comment.CommentRepository;
+import org.cosmic.cafe.infra.comment.entity.CommentEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,7 +17,9 @@ public class CommentCoreRepository implements CommentRepository {
 
     @Override
     public Comment save(Comment comment) {
-        return null;
+        CommentEntity commentEntity = CommentEntity.of(comment);
+        CommentEntity savedCommentEntity = commentJpaRepository.save(commentEntity);
+        return Comment.of(savedCommentEntity);
     }
 
     @Override
