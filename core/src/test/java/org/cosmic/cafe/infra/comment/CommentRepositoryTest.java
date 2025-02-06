@@ -227,4 +227,32 @@ public class CommentRepositoryTest extends RepositoryContext {
         }
     }
 
+    @Nested
+    class deleteByParentId_메서드는 {
+        @Test
+        void 부모_댓글의_모든_대댓글을_삭제한다() {
+            // given
+            UUID userId = UUID.randomUUID();
+            String content = "test content";
+            UUID postId = UUID.randomUUID();
+            UUID parentId = UUID.randomUUID();
+            LocalDateTime createdAt = LocalDateTime.now();
+
+            Comment savedComment = commentRepository.save(Comment.builder()
+                    .userId(userId)
+                    .content(content)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            // when
+            commentRepository.deleteByParentId(savedComment.getParentId());
+
+            // then
+            List<Comment> foundComments = commentRepository.findByParentId(savedComment.getParentId());
+            assertThat(foundComments).isEmpty();
+        }
+    }
+
 }
