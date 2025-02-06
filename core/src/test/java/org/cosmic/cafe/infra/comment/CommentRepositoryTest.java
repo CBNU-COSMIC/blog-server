@@ -199,4 +199,32 @@ public class CommentRepositoryTest extends RepositoryContext {
         }
     }
 
+    @Nested
+    class deleteByPostId_메서드는 {
+        @Test
+        void 해당_게시글의_모든_댓글을_삭제한다() {
+            // given
+            UUID userId = UUID.randomUUID();
+            String content = "test content";
+            UUID postId = UUID.randomUUID();
+            UUID parentId = UUID.randomUUID();
+            LocalDateTime createdAt = LocalDateTime.now();
+
+            Comment savedComment = commentRepository.save(Comment.builder()
+                    .userId(userId)
+                    .content(content)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            // when
+            commentRepository.deleteByPostId(savedComment.getPostId());
+
+            // then
+            List<Comment> foundComments = commentRepository.findByPostId(savedComment.getPostId());
+            assertThat(foundComments).isEmpty();
+        }
+    }
+
 }
