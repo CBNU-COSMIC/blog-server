@@ -12,4 +12,6 @@ public interface CommentJpaRepository extends JpaRepository<CommentEntity, UUID>
     List<CommentEntity> findByParentId(UUID parentId);
 
     void deleteByPostId(UUID postId);
+
+    void deleteByParentId(UUID parentId);
 }

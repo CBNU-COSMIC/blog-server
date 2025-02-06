@@ -59,6 +59,6 @@ public class CommentCoreRepository implements CommentRepository {
 
     @Override
     public void deleteByParentId(UUID parentId) {
-
+        commentJpaRepository.deleteByParentId(parentId);
     }
 }
