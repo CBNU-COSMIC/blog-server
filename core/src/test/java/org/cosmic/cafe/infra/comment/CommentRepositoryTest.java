@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -92,6 +93,43 @@ public class CommentRepositoryTest extends RepositoryContext {
 
             // then
             assertThat(foundComment).isNull();
+        }
+    }
+
+    @Nested
+    class findByPostId_메서드는 {
+
+        @Test
+        void 해당_게시글의_모든_댓글을_조회한다() {
+            // given
+            UUID userId = UUID.randomUUID();
+            String content = "test content";
+            UUID postId = UUID.randomUUID();
+            UUID parentId = UUID.randomUUID();
+            LocalDateTime createdAt = LocalDateTime.now();
+
+            Comment savedComment1 = commentRepository.save(Comment.builder()
+                    .userId(userId)
+                    .content(content)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            Comment savedComment2 = commentRepository.save(Comment.builder()
+                    .userId(userId)
+                    .content(content)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            // when
+            List<Comment> comments = commentRepository.findByPostId(postId);
+
+            // then
+            assertThat(comments.size()).isEqualTo(2);
+            assertThat(comments.get(0).getPostId()).isEqualTo(postId);
         }
     }
 }
