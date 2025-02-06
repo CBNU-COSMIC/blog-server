@@ -9,7 +9,7 @@ public interface CommentRepository {
     Optional<Comment> findById(UUID id);
     List<Comment> findByPostId(UUID postId);
     List<Comment> findByParentId(UUID parentId);
-    void delete(UUID id);
+    void deleteById(UUID id);
     void deleteByPostId(UUID postId);
     void deleteByParentId(UUID parentId);
 }
