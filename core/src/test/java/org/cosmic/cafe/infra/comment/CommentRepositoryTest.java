@@ -50,4 +50,48 @@ public class CommentRepositoryTest extends RepositoryContext {
         }
 
     }
+
+    @Nested
+    class findById_메서드는 {
+
+        @Test
+        void 해당_아이디가_존재하면_댓글을_반환한다() {
+           // given
+            UUID userId = UUID.randomUUID();
+            String content = "test content";
+            UUID postId = UUID.randomUUID();
+            UUID parentId = UUID.randomUUID();
+            LocalDateTime createdAt = LocalDateTime.now();
+
+            Comment savedComment = commentRepository.save(Comment.builder()
+                    .userId(userId)
+                    .content(content)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            // when
+            Comment foundComment = commentRepository.findById(savedComment.getId()).orElse(null);
+
+            // then
+            assertAll(
+                    () -> assertThat(foundComment).isNotNull(),
+                    () -> assertThat(foundComment.getId()).isEqualTo(savedComment.getId())
+            );
+
+        }
+
+        @Test
+        void 해당_아이디가_존재하지_않으면_null을_반환한다() {
+            // given
+            UUID id = UUID.randomUUID();
+
+            // when
+            Comment foundComment = commentRepository.findById(id).orElse(null);
+
+            // then
+            assertThat(foundComment).isNull();
+        }
+    }
 }
