@@ -50,6 +50,38 @@ public class CommentRepositoryTest extends RepositoryContext {
             );
         }
 
+        @Test
+        void 존재하는_댓글은_수정한다() {
+            // given
+            UUID userId = UUID.randomUUID();
+            String content = "test content";
+            String updatedContent = "updated content";
+            UUID postId = UUID.randomUUID();
+            UUID parentId = UUID.randomUUID();
+            LocalDateTime createdAt = LocalDateTime.now();
+
+            Comment savedComment = commentRepository.save(Comment.builder()
+                    .userId(userId)
+                    .content(content)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            // when
+            Comment updatedComment = commentRepository.save(Comment.builder()
+                    .id(savedComment.getId())
+                    .userId(userId)
+                    .content(updatedContent)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            // then
+            assertThat(savedComment.getId()).isEqualTo(updatedComment.getId());
+            assertThat(updatedComment.getContent()).isEqualTo(updatedContent);
+        }
     }
 
     @Nested
