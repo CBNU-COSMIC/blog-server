@@ -7,6 +7,7 @@ import org.cosmic.cafe.infra.comment.entity.CommentEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -23,8 +24,9 @@ public class CommentCoreRepository implements CommentRepository {
     }
 
     @Override
-    public Comment findById(UUID id) {
-        return null;
+    public Optional<Comment> findById(UUID id) {
+        Optional<CommentEntity> commentEntity = commentJpaRepository.findById(id);
+        return commentEntity.map(Comment::of);
     }
 
     @Override
