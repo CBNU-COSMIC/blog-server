@@ -40,7 +40,11 @@ public class CommentCoreRepository implements CommentRepository {
 
     @Override
     public List<Comment> findByParentId(UUID parentId) {
-        return List.of();
+        List<CommentEntity> commentEntities = commentJpaRepository.findByParentId(parentId);
+
+        return commentEntities.stream()
+                .map(Comment::of)
+                .toList();
     }
 
     @Override
