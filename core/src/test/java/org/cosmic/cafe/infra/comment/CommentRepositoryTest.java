@@ -132,4 +132,41 @@ public class CommentRepositoryTest extends RepositoryContext {
             assertThat(comments.get(0).getPostId()).isEqualTo(postId);
         }
     }
+
+    @Nested
+    class findByParentId_메서드는 {
+
+        @Test
+        void 부모_댓글의_모든_대댓글을_조회한다() {
+            // given
+            UUID userId = UUID.randomUUID();
+            String content = "test content";
+            UUID postId = UUID.randomUUID();
+            UUID parentId = UUID.randomUUID();
+            LocalDateTime createdAt = LocalDateTime.now();
+
+            Comment savedComment1 = commentRepository.save(Comment.builder()
+                    .userId(userId)
+                    .content(content)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            Comment savedComment2 = commentRepository.save(Comment.builder()
+                    .userId(userId)
+                    .content(content)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            // when
+            List<Comment> comments = commentRepository.findByParentId(parentId);
+
+            // then
+            assertThat(comments.size()).isEqualTo(2);
+            assertThat(comments.get(0).getParentId()).isEqualTo(parentId);
+        }
+    }
 }
