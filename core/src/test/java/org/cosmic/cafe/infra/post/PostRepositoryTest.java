@@ -218,4 +218,62 @@ public class PostRepositoryTest extends RepositoryContext {
                     .containsExactlyInAnyOrder(title,title2);
         }
     }
+
+    @Nested
+    class findByBoardId_메서드는{
+
+        @Test
+        void 게시글이_존재하는_게시판_아이디에_해당하는_게시글_객체들을_반환한다(){
+
+            //given
+            String boardId = "게시판";
+            String title = "게시판 TITLE";
+            String content = "TEST CONTENT";
+            Long hits = 1L;
+
+            Post savedPost = postRepository.save(Post.builder()
+                    .boardId(boardId)
+                    .title(title)
+                    .content(content)
+                    .hits(hits)
+                    .build());
+
+            String boardId2 = "공지사항";
+            title = "공지사항 TITLE2";
+            content = "TEST CONTENT2";
+            hits = 2L;
+
+            Post savedPost2 = postRepository.save(Post.builder()
+                    .boardId(boardId2)
+                    .title(title)
+                    .content(content)
+                    .hits(hits)
+                    .build());
+
+            boardId2 = "공지사항";
+            title = "공지사항 TITLE3";
+            content = "TEST CONTENT2";
+            hits = 2L;
+
+            Post savedPost3 = postRepository.save(Post.builder()
+                    .boardId(boardId2)
+                    .title(title)
+                    .content(content)
+                    .hits(hits)
+                    .build());
+
+            //when
+            List<Post> foundPost1 = postRepository.findByBoardId(boardId);
+            List<Post> foundPost2 = postRepository.findByBoardId(boardId2);
+
+            //then
+            org.assertj.core.api.Assertions.assertThat(foundPost1)
+                    .extracting(Post::getTitle)
+                    .containsExactlyInAnyOrder("게시판 TITLE");
+
+            org.assertj.core.api.Assertions.assertThat(foundPost2)
+                    .extracting(Post::getTitle)
+                    .containsExactlyInAnyOrder("공지사항 TITLE2","공지사항 TITLE3");
+        }
+    }
 }
