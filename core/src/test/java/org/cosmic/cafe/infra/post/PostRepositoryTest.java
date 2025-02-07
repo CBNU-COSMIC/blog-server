@@ -108,4 +108,44 @@ public class PostRepositoryTest extends RepositoryContext {
         }
     }
 
+    @Nested
+    class findAll_메서드는{
+
+        @Test
+        void 모든_게시글_객체를_반환한다(){
+
+            //given
+            String boardId = "게시판";
+            String title = "TEST TITLE";
+            String content = "TEST CONTENT";
+            Long hits = 1L;
+
+            Post savedPost1 = postRepository.save(Post.builder()
+                    .boardId(boardId)
+                    .title(title)
+                    .content(content)
+                    .hits(hits)
+                    .build());
+
+            boardId = "공지사항";
+            title = "TEST TITLE2";
+            content = "TEST CONTENT2";
+            hits = 2L;
+
+            Post savedPost2 = postRepository.save(Post.builder()
+                    .boardId(boardId)
+                    .title(title)
+                    .content(content)
+                    .hits(hits)
+                    .build());
+
+            //when
+            List<Post> posts = postRepository.findAll();
+
+            //then
+            org.assertj.core.api.Assertions.assertThat(posts)
+                    .extracting(Post::getTitle)
+                    .containsExactlyInAnyOrder(savedPost1.getTitle(), savedPost2.getTitle());
+        }
+    }
 }
