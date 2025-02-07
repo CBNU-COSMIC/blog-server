@@ -24,6 +24,7 @@ public class Post {
     public Post(UUID id, UUID boardId, String title, String content, Long hits){
         validateTitle(title);
         validateContent(content);
+        validateBoardId(boardId);
         this.id = id;
         this.boardId = boardId;
         this.title = makeValidTitle(title);
@@ -39,6 +40,11 @@ public class Post {
                 .content(entity.getContent())
                 .hits(entity.getHits())
                 .build();
+    }
+
+    private void validateBoardId(UUID boardId){
+        if(boardId == null)
+            throw new BadRequestException(ERROR_CONTENT_IS_BLANK,PostErrorCode.ARGUMENT_IS_NULL);
     }
 
     private void validateTitle(String title){
