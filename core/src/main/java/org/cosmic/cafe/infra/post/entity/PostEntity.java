@@ -16,21 +16,20 @@ public class PostEntity {
     @Id @GeneratedValue
     private UUID id;
 
+    private UUID boardId;
+
     private String title;
 
     private String content;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "member_id")
-//    private Member member;
 
     private Long hits;
 
     protected PostEntity(){}
 
     @Builder
-    public PostEntity(UUID id, String title, String content, LocalDateTime createdAt, Long hits) {
+    public PostEntity(UUID id, UUID boardId, String title, String content, Long hits) {
         this.id = id;
+        this.boardId = boardId;
         this.title = title;
         this.content = content;
         this.hits = hits;
@@ -39,6 +38,7 @@ public class PostEntity {
     public static PostEntity from(Post post) {
         return PostEntity.builder()
                 .id(post.getId())
+                .boardId(post.getBoardId())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .hits(post.getHits())
