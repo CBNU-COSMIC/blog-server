@@ -148,4 +148,32 @@ public class PostRepositoryTest extends RepositoryContext {
                     .containsExactlyInAnyOrder(savedPost1.getTitle(), savedPost2.getTitle());
         }
     }
+
+    @Nested
+    class deleteById_메서드는{
+        
+        @Test
+        void 해당_게시물을_삭제한다(){
+
+            //given
+            String boardId = "게시판";
+            String title = "TEST TITLE";
+            String content = "TEST CONTENT";
+            Long hits = 1L;
+
+            Post savedPost = postRepository.save(Post.builder()
+                    .boardId(boardId)
+                    .title(title)
+                    .content(content)
+                    .hits(hits)
+                    .build());
+
+            //when
+            postRepository.deleteById(savedPost.getId());
+
+            //then
+            Post post = postRepository.findById(savedPost.getId()).orElse(null);
+            org.assertj.core.api.Assertions.assertThat(post).isNull();
+        }
+    }
 }
