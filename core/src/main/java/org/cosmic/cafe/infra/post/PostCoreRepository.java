@@ -20,24 +20,24 @@ public class PostCoreRepository implements PostRepository {
     public Post save(Post post){
         PostEntity postEntity = PostEntity.from(post);
         PostEntity saveedPostEntity = postJpaRepository.save(postEntity);
-        return Post.fromEntity(saveedPostEntity);    }
+        return Post.of(saveedPostEntity);    }
 
     @Override
     public Optional<Post> findById(UUID id){
         Optional<PostEntity> postEntity = postJpaRepository.findById(id);
-        return postEntity.map(Post::fromEntity);
+        return postEntity.map(Post::of);
     }
 
     @Override
     public List<Post> findByTitle(String title){
         List<PostEntity> postEntities = postJpaRepository.findByTitle(title);
-        return postEntities.stream().map(Post::fromEntity).toList();
+        return postEntities.stream().map(Post::of).toList();
     }
 
     @Override
     public List<Post> findAll(){
         List<PostEntity> postEntities = postJpaRepository.findAll();
-        return postEntities.stream().map(Post::fromEntity).toList();
+        return postEntities.stream().map(Post::of).toList();
     }
 
     @Override

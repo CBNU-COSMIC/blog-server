@@ -32,7 +32,7 @@ public class Post {
         this.hits =hits;
     }
 
-    public static Post fromEntity(PostEntity entity){
+    public static Post of(PostEntity entity){
         return Post.builder()
                 .id(entity.getId())
                 .boardId(entity.getBoardId())
