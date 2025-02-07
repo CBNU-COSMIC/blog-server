@@ -51,4 +51,10 @@ public class PostCoreRepository implements PostRepository {
         return postEntities.stream().map(Post::of).toList();
     }
 
+    @Override
+    public List<Post> findByBoardId(String boardId){
+        List<PostEntity> postEntities = postJpaRepository.findByBoardId(boardId);
+        return postEntities.stream().map(Post::of).toList();
+    }
+
 }

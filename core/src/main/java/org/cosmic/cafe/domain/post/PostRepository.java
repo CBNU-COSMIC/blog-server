@@ -11,4 +11,5 @@ public interface PostRepository {
     public List<Post> findAll();
     public void deleteById(UUID id);
     public List<Post> findByTitleContaining(String title);
+    public List<Post> findByBoardId(String boardId);
 }
