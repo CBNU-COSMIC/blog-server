@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -75,6 +76,35 @@ public class PostRepositoryTest extends RepositoryContext {
                     ()-> assertThat(foundPost).isNotNull(),
                     ()-> assertThat(foundPost.getId()).isEqualTo(savedPost.getId())
             );
+        }
+    }
+
+    @Nested
+    class findByTitle_메서드는{
+
+        @Test
+        void 해당_제목이_존재하면_게시글_객체를_반환한다(){
+
+            //given
+            String boardId = "게시판";
+            String title = "TEST TITLE";
+            String content = "TEST CONTENT";
+            Long hits = 1L;
+
+            Post savedPost = postRepository.save(Post.builder()
+                    .boardId(boardId)
+                    .title(title)
+                    .content(content)
+                    .hits(hits)
+                    .build());
+
+            //when
+            List<Post> posts = postRepository.findByTitle(title);
+
+            //then
+            for (Post post : posts) {
+                org.assertj.core.api.Assertions.assertThat(post.getTitle()).isEqualTo(title);
+            }
         }
     }
 
