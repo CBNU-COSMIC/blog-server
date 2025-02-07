@@ -16,7 +16,7 @@ public class PostEntity {
     @Id @GeneratedValue
     private UUID id;
 
-    private UUID boardId;
+    private String boardId;
 
     private String title;
 
@@ -27,7 +27,7 @@ public class PostEntity {
     protected PostEntity(){}
 
     @Builder
-    public PostEntity(UUID id, UUID boardId, String title, String content, Long hits) {
+    public PostEntity(UUID id, String boardId, String title, String content, Long hits) {
         this.id = id;
         this.boardId = boardId;
         this.title = title;

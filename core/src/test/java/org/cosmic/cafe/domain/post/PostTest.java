@@ -22,7 +22,7 @@ public class PostTest {
 
             //given
             UUID postId = UUID.randomUUID();
-            UUID boardId = UUID.randomUUID();
+            String boardId = "공지사항";
             String title = "TEST TITLE";
             String content = "TEST CONTENT";
             Long hits = 1L;
@@ -46,7 +46,7 @@ public class PostTest {
 
         @ParameterizedTest
         @MethodSource("generateInvalidArguments")
-        void 게시글이_게시판아이디_제목_본문을_모두_포함하지_않으면_예외를_발생시킨다(UUID boardId, String title, String content){
+        void 게시글이_게시판아이디_제목_본문을_모두_포함하지_않으면_예외를_발생시킨다(String boardId, String title, String content){
 
             //given
             UUID postId = UUID.randomUUID();
@@ -63,8 +63,8 @@ public class PostTest {
         private static Stream<Arguments> generateInvalidArguments(){
             return Stream.of(
                     Arguments.of(null,"title","content"),
-                    Arguments.of(UUID.randomUUID(),"","content"),
-                    Arguments.of(UUID.randomUUID(),"title","")
+                    Arguments.of("게시판","","content"),
+                    Arguments.of("학과 공지사항","title","")
             );
         }
     }

@@ -12,7 +12,7 @@ import java.util.UUID;
 public class Post {
 
     private UUID id;
-    private UUID boardId;
+    private String boardId;
     private String title;
     private String content;
     private Long hits;
@@ -21,7 +21,7 @@ public class Post {
     private static String ERROR_CONTENT_IS_BLANK = "본문은 비어있을 수 없습니다.";
 
     @Builder
-    public Post(UUID id, UUID boardId, String title, String content, Long hits){
+    public Post(UUID id, String boardId, String title, String content, Long hits){
         validateTitle(title);
         validateContent(content);
         validateBoardId(boardId);
@@ -42,7 +42,7 @@ public class Post {
                 .build();
     }
 
-    private void validateBoardId(UUID boardId){
+    private void validateBoardId(String boardId){
         if(boardId == null)
             throw new BadRequestException(ERROR_CONTENT_IS_BLANK,PostErrorCode.ARGUMENT_IS_NULL);
     }
