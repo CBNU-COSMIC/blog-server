@@ -45,4 +45,10 @@ public class PostCoreRepository implements PostRepository {
         postJpaRepository.deleteById(id);
     }
 
+    @Override
+    public List<Post> findByTitleContaining(String title){
+        List<PostEntity> postEntities = postJpaRepository.findByTitleContaining(title);
+        return postEntities.stream().map(Post::of).toList();
+    }
+
 }

@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface PostJpaRepository extends JpaRepository<PostEntity, UUID> {
     List<PostEntity> findByTitle(String title);
+    List<PostEntity> findByTitleContaining(String title);
 }
