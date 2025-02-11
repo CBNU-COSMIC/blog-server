@@ -1,0 +1,290 @@
+package org.cosmic.cafe.infra.comment;
+
+import org.cosmic.cafe.context.RepositoryContext;
+import org.cosmic.cafe.domain.Comment.Comment;
+import org.cosmic.cafe.domain.Comment.CommentRepository;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
+public class CommentRepositoryTest extends RepositoryContext {
+
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Nested
+    class save_메서드는 {
+
+        @Test
+        void 댓글을_저장한다() {
+            // given
+            UUID userId = UUID.randomUUID();
+            String content = "test content";
+            UUID postId = UUID.randomUUID();
+            UUID parentId = UUID.randomUUID();
+            LocalDateTime createdAt = LocalDateTime.now();
+
+            // when
+            Comment savedComment = commentRepository.save(Comment.builder()
+                    .userId(userId)
+                    .content(content)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            // then
+            assertAll(
+                    () -> assertThat(savedComment.getId()).isNotNull(),
+                    () -> assertThat(savedComment.getUserId()).isEqualTo(userId),
+                    () -> assertThat(savedComment.getContent()).isEqualTo(content),
+                    () -> assertThat(savedComment.getPostId()).isEqualTo(postId),
+                    () -> assertThat(savedComment.getCreatedAt()).isEqualTo(createdAt)
+            );
+        }
+
+        @Test
+        void 존재하는_댓글은_수정한다() {
+            // given
+            UUID userId = UUID.randomUUID();
+            String content = "test content";
+            String updatedContent = "updated content";
+            UUID postId = UUID.randomUUID();
+            UUID parentId = UUID.randomUUID();
+            LocalDateTime createdAt = LocalDateTime.now();
+
+            Comment savedComment = commentRepository.save(Comment.builder()
+                    .userId(userId)
+                    .content(content)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            // when
+            Comment updatedComment = commentRepository.save(Comment.builder()
+                    .id(savedComment.getId())
+                    .userId(userId)
+                    .content(updatedContent)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            // then
+            assertThat(savedComment.getId()).isEqualTo(updatedComment.getId());
+            assertThat(updatedComment.getContent()).isEqualTo(updatedContent);
+        }
+    }
+
+    @Nested
+    class findById_메서드는 {
+
+        @Test
+        void 해당_아이디가_존재하면_댓글을_반환한다() {
+           // given
+            UUID userId = UUID.randomUUID();
+            String content = "test content";
+            UUID postId = UUID.randomUUID();
+            UUID parentId = UUID.randomUUID();
+            LocalDateTime createdAt = LocalDateTime.now();
+
+            Comment savedComment = commentRepository.save(Comment.builder()
+                    .userId(userId)
+                    .content(content)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            // when
+            Comment foundComment = commentRepository.findById(savedComment.getId()).orElse(null);
+
+            // then
+            assertAll(
+                    () -> assertThat(foundComment).isNotNull(),
+                    () -> assertThat(foundComment.getId()).isEqualTo(savedComment.getId())
+            );
+
+        }
+
+        @Test
+        void 해당_아이디가_존재하지_않으면_null을_반환한다() {
+            // given
+            UUID id = UUID.randomUUID();
+
+            // when
+            Comment foundComment = commentRepository.findById(id).orElse(null);
+
+            // then
+            assertThat(foundComment).isNull();
+        }
+    }
+
+    @Nested
+    class findByPostId_메서드는 {
+
+        @Test
+        void 해당_게시글의_모든_댓글을_조회한다() {
+            // given
+            UUID userId = UUID.randomUUID();
+            String content = "test content";
+            UUID postId = UUID.randomUUID();
+            UUID parentId = UUID.randomUUID();
+            LocalDateTime createdAt = LocalDateTime.now();
+
+            Comment savedComment1 = commentRepository.save(Comment.builder()
+                    .userId(userId)
+                    .content(content)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            Comment savedComment2 = commentRepository.save(Comment.builder()
+                    .userId(userId)
+                    .content(content)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            // when
+            List<Comment> comments = commentRepository.findByPostId(postId);
+
+            // then
+            assertThat(comments.size()).isEqualTo(2);
+            assertThat(comments.get(0).getPostId()).isEqualTo(postId);
+        }
+    }
+
+    @Nested
+    class findByParentId_메서드는 {
+
+        @Test
+        void 부모_댓글의_모든_대댓글을_조회한다() {
+            // given
+            UUID userId = UUID.randomUUID();
+            String content = "test content";
+            UUID postId = UUID.randomUUID();
+            UUID parentId = UUID.randomUUID();
+            LocalDateTime createdAt = LocalDateTime.now();
+
+            Comment savedComment1 = commentRepository.save(Comment.builder()
+                    .userId(userId)
+                    .content(content)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            Comment savedComment2 = commentRepository.save(Comment.builder()
+                    .userId(userId)
+                    .content(content)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            // when
+            List<Comment> comments = commentRepository.findByParentId(parentId);
+
+            // then
+            assertThat(comments.size()).isEqualTo(2);
+            assertThat(comments.get(0).getParentId()).isEqualTo(parentId);
+        }
+    }
+
+    @Nested
+    class deleteById_메서드는 {
+
+        @Test
+        void 해당_댓글을_삭제한다() {
+            // given
+            UUID userId = UUID.randomUUID();
+            String content = "test content";
+            UUID postId = UUID.randomUUID();
+            UUID parentId = UUID.randomUUID();
+            LocalDateTime createdAt = LocalDateTime.now();
+
+            Comment savedComment = commentRepository.save(Comment.builder()
+                    .userId(userId)
+                    .content(content)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            // when
+            commentRepository.deleteById(savedComment.getId());
+
+            // then
+            Comment foundComment = commentRepository.findById(savedComment.getId()).orElse(null);
+            assertThat(foundComment).isNull();
+        }
+    }
+
+    @Nested
+    class deleteByPostId_메서드는 {
+        @Test
+        void 해당_게시글의_모든_댓글을_삭제한다() {
+            // given
+            UUID userId = UUID.randomUUID();
+            String content = "test content";
+            UUID postId = UUID.randomUUID();
+            UUID parentId = UUID.randomUUID();
+            LocalDateTime createdAt = LocalDateTime.now();
+
+            Comment savedComment = commentRepository.save(Comment.builder()
+                    .userId(userId)
+                    .content(content)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            // when
+            commentRepository.deleteByPostId(savedComment.getPostId());
+
+            // then
+            List<Comment> foundComments = commentRepository.findByPostId(savedComment.getPostId());
+            assertThat(foundComments).isEmpty();
+        }
+    }
+
+    @Nested
+    class deleteByParentId_메서드는 {
+        @Test
+        void 부모_댓글의_모든_대댓글을_삭제한다() {
+            // given
+            UUID userId = UUID.randomUUID();
+            String content = "test content";
+            UUID postId = UUID.randomUUID();
+            UUID parentId = UUID.randomUUID();
+            LocalDateTime createdAt = LocalDateTime.now();
+
+            Comment savedComment = commentRepository.save(Comment.builder()
+                    .userId(userId)
+                    .content(content)
+                    .postId(postId)
+                    .parentId(parentId)
+                    .createdAt(createdAt)
+                    .build());
+
+            // when
+            commentRepository.deleteByParentId(savedComment.getParentId());
+
+            // then
+            List<Comment> foundComments = commentRepository.findByParentId(savedComment.getParentId());
+            assertThat(foundComments).isEmpty();
+        }
+    }
+
+}
