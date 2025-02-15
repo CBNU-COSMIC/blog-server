@@ -23,6 +23,16 @@ public class PostService {
             throw new BadRequestException("해당 게시글 수정 권한이 없습니다. 게시글 아이디 : %s".formatted(postId), PostErrorCode.UPDATE_PERMISSION_DENIED);
         }
 
+        Post updatedPost = Post.builder()
+                .id(post.getId())
+                .memberId(post.getMemberId())
+                .boardId(post.getBoardId())
+                .title(title)
+                .content(content)
+                .hits(post.getHits())
+                .build();
+
+        postRepository.save(updatedPost);
     }
 
     private Post getPostById(UUID postId) {
