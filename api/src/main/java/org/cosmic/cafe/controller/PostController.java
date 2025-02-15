@@ -2,9 +2,12 @@ package org.cosmic.cafe.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.cosmic.cafe.application.post.PostService;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.cosmic.cafe.controller.annotation.Login;
+import org.cosmic.cafe.dto.PostUpdateRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -12,4 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
 
     private final PostService postService;
+
+    @PutMapping("/{postId}")
+    public ResponseEntity<Void> update(@PathVariable UUID postId, @Login UUID memberId, @RequestBody PostUpdateRequest postUpdateRequest) {
+        postService.update(postUpdateRequest.title(), postUpdateRequest.content(), postId, memberId);
+        return ResponseEntity.ok().build();
+    }
 }
