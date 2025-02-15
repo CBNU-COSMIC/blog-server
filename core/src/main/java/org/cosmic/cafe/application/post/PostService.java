@@ -7,6 +7,7 @@ import org.cosmic.cafe.domain.post.exception.PostErrorCode;
 import org.cosmic.cafe.exception.type.BadRequestException;
 import org.cosmic.cafe.exception.type.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -16,6 +17,7 @@ public class PostService {
 
     private final PostRepository postRepository;
 
+    @Transactional
     public void update(String title, String content, UUID memberId, UUID postId) {
         Post post = getPostById(postId);
 
