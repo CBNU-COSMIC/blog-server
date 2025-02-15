@@ -16,6 +16,8 @@ public class PostEntity {
     @Id @GeneratedValue
     private UUID id;
 
+    private UUID memberId;
+
     private String boardId;
 
     private String title;
@@ -27,8 +29,9 @@ public class PostEntity {
     protected PostEntity(){}
 
     @Builder
-    public PostEntity(UUID id, String boardId, String title, String content, Long hits) {
+    public PostEntity(UUID id, UUID memberId, String boardId, String title, String content, Long hits) {
         this.id = id;
+        this.memberId = memberId;
         this.boardId = boardId;
         this.title = title;
         this.content = content;
@@ -38,6 +41,7 @@ public class PostEntity {
     public static PostEntity from(Post post) {
         return PostEntity.builder()
                 .id(post.getId())
+                .memberId(post.getMemberId())
                 .boardId(post.getBoardId())
                 .title(post.getTitle())
                 .content(post.getContent())
