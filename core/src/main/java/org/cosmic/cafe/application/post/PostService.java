@@ -19,7 +19,7 @@ public class PostService {
     public void update(String title, String content, UUID memberId, UUID postId) {
         Post post = getPostById(postId);
 
-        if (!(post.getMemberId() == memberId)) {
+        if (post.isNotWritten(memberId)) {
             throw new BadRequestException("해당 게시글 수정 권한이 없습니다. 게시글 아이디 : %s".formatted(postId), PostErrorCode.UPDATE_PERMISSION_DENIED);
         }
 

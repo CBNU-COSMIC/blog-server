@@ -45,6 +45,10 @@ public class Post {
                 .build();
     }
 
+    public boolean isNotWritten(UUID memberId) {
+        return !this.memberId.equals(memberId);
+    }
+
     private void validateBoardId(String boardId){
         if(boardId == null)
             throw new BadRequestException(ERROR_CONTENT_IS_BLANK,PostErrorCode.ARGUMENT_IS_NULL);
