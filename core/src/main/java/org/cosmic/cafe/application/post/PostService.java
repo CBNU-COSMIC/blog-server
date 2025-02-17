@@ -1,6 +1,7 @@
 package org.cosmic.cafe.application.post;
 
 import lombok.RequiredArgsConstructor;
+import org.cosmic.cafe.application.post.dto.PostDetailResponse;
 import org.cosmic.cafe.application.post.dto.PostListResponse;
 import org.cosmic.cafe.domain.post.Post;
 import org.cosmic.cafe.domain.post.PostRepository;
@@ -26,6 +27,15 @@ public class PostService {
     public Post getPost(UUID postId) {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("해당 게시글이 존재하지 않습니다.", PostErrorCode.NOT_FOUND));
+    }
+
+    public PostDetailResponse getPostDetail(UUID postId) {
+        Post post = this.getPost(postId);
+        
+        // TODO: Member 구현 후 실제 작성자 정보 조회 로직으로 대체 필요
+        String author = "Unknown"; // 임시로 Unknown 처리
+        
+        return PostDetailResponse.of(post, author);
     }
 
     public List<PostListResponse> getPostsByBoardId(String boardId, int page) {
