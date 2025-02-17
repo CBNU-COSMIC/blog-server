@@ -29,4 +29,10 @@ public class CommentService {
         return commentRepository.save(comment).getId();
     }
 
+    public void deleteComment(String stringCommentId, UUID memberId) {
+        UUID commentId = UUID.fromString(stringCommentId);
+        Optional<Comment> comment = commentRepository.findById(commentId);
+        comment.ifPresent(comment1 -> comment1.validateOwner(memberId));
+        commentRepository.deleteById(memberId);
+    }
 }
