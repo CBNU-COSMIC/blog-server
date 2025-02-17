@@ -1,6 +1,7 @@
 package org.cosmic.cafe;
 
 import org.cosmic.cafe.application.post.dto.PostDetailResponse;
+import org.cosmic.cafe.application.post.dto.PostListResponse;
 import org.cosmic.cafe.context.ControllerTest;
 import org.cosmic.cafe.domain.post.Post;
 import org.cosmic.cafe.dto.LoginPayload;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpSession;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.BDDMockito.given;
@@ -46,6 +48,43 @@ public class PostControllerTest extends ControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.title").value("Title1"))
                     .andExpect(jsonPath("$.content").value("Content1"));
+        }
+
+        @Test
+        void 게시글_목록_조회_요청은_200을_반환한다() throws Exception {
+            // given
+            String boardId = "게시판";
+            int page = 1;
+
+            List<PostListResponse> expectedResponse = List.of(
+                    PostListResponse.builder()
+                            .postId(UUID.randomUUID())
+                            .title("Title1")
+                            .author("author1")
+                            .date(LocalDateTime.now())
+                            .hits(1L)
+                            .build(),
+                    PostListResponse.builder()
+                            .postId(UUID.randomUUID())
+                            .title("Title2")
+                            .author("author2")
+                            .date(LocalDateTime.now().minusHours(1))
+                            .hits(1L)
+                            .build()
+            );
+
+            given(postService.getPostsByBoardId(boardId, page)).willReturn(expectedResponse);
+
+            // when & then
+            mockMvc.perform(get("/api/posts")
+                            .param("boardId", boardId)
+                            .param("page", String.valueOf(page))
+                            .contentType("application/json"))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$[0].title").value("Title1"))
+                    .andExpect(jsonPath("$[1].title").value("Title2"))
+                    .andExpect(jsonPath("$[0].author").value("author1"))
+                    .andExpect(jsonPath("$[1].author").value("author2"));
         }
     }
 
