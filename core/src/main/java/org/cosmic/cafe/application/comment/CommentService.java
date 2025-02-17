@@ -2,9 +2,11 @@ package org.cosmic.cafe.application.comment;
 
 import lombok.RequiredArgsConstructor;
 import org.cosmic.cafe.application.comment.dto.CommentResponseDTO;
+import org.cosmic.cafe.application.member.MemberService;
 import org.cosmic.cafe.domain.Comment.Comment;
 import org.cosmic.cafe.domain.Comment.CommentRepository;
 import org.cosmic.cafe.domain.Comment.exception.CommentErrorCode;
+import org.cosmic.cafe.domain.member.Member;
 import org.cosmic.cafe.exception.type.BadRequestException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,13 +17,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final MemberService memberService;
 
-    @Transactional
     public UUID saveComment(UUID userId, String content, UUID postId, UUID parentId) {
 
         Comment comment = getComment(userId, content, postId, parentId);
@@ -29,7 +30,6 @@ public class CommentService {
         return commentRepository.save(comment).getId();
     }
 
-    @Transactional
     public void deleteComment(String stringCommentId, UUID memberId) {
         UUID commentId = UUID.fromString(stringCommentId);
         Optional<Comment> comment = commentRepository.findById(commentId);
@@ -37,17 +37,16 @@ public class CommentService {
         commentRepository.deleteById(memberId);
     }
 
-    @Transactional
     public CommentResponseDTO modifyComment(String content, String commentId, UUID memberId) {
         Comment comment = commentRepository.findById(UUID.fromString(commentId))
                 .orElseThrow(() -> new BadRequestException("해당 댓글이 존재하지 않습니다.", CommentErrorCode.NO_SUCH_COMMENT));
         comment.modifyContent(memberId, content);
-        return new CommentResponseDTO(comment);
+        return new CommentResponseDTO(comment,memberService.findById(comment.getUserId()));
     }
 
     public List<CommentResponseDTO> getCommentsByPostId(String postId) {
         List<Comment> comments = commentRepository.findByPostId(UUID.fromString(postId));
-        return comments.stream().map(CommentResponseDTO::new).toList();
+        return comments.stream().map(comment -> new CommentResponseDTO(comment,memberService.findById(comment.getUserId()))).toList();
     }
 
     private static Comment getComment(UUID userId, String content, UUID postId, UUID parentId) {
