@@ -10,6 +10,7 @@ import org.cosmic.cafe.domain.Comment.Comment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/api/comment")
@@ -35,5 +36,11 @@ public class CommentController {
     public ResponseEntity<CommentResponseDTO> modifyComment(@RequestBody ModifyCommentDTO modifyCommentDTO, @PathVariable("commentId")String commentId, @Login UUID memberId){
         CommentResponseDTO comment = commentService.modifyComment(modifyCommentDTO.getContent(),commentId,memberId);
         return ResponseEntity.ok(comment);
+    }
+
+    @GetMapping("{postId}")
+    public ResponseEntity<List<CommentResponseDTO>> getCommentsByPostId(@PathVariable("postId")String postId){
+        List<CommentResponseDTO> comments = commentService.getCommentsByPostId(postId);
+        return ResponseEntity.ok(comments);
     }
 }
