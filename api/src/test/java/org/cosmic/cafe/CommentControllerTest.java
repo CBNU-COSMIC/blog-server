@@ -76,4 +76,47 @@ public class CommentControllerTest extends ControllerTest {
         }
     }
 
+    @Nested
+    class 댓글_조회{
+
+        @Test
+        void 올바른_댓글조회는_200을_반환한다() throws Exception {
+            UUID commentId = UUID.randomUUID();
+            UUID memberId = UUID.randomUUID();
+
+            MockHttpSession session = new MockHttpSession();
+            session.setAttribute("loginPayload", new LoginPayload(memberId, Role.GUEST));
+
+            mockMvc.perform(delete("/api/comment/commentId"+commentId)
+                            .session(session))
+                    .andExpect(status().isOk());
+        }
+
+        @Test
+        void 올바른_댓글조회는_200을_반환한다_postId() throws Exception {
+            UUID postId = UUID.randomUUID();
+            UUID memberId = UUID.randomUUID();
+
+            MockHttpSession session = new MockHttpSession();
+            session.setAttribute("loginPayload", new LoginPayload(memberId, Role.GUEST));
+
+            mockMvc.perform(delete("/api/comment/postId"+postId)
+                            .session(session))
+                    .andExpect(status().isOk());
+        }
+
+        @Test
+        void 올바른_댓글조회는_200을_반환한다_parentId() throws Exception {
+            UUID parentId = UUID.randomUUID();
+            UUID memberId = UUID.randomUUID();
+
+            MockHttpSession session = new MockHttpSession();
+            session.setAttribute("loginPayload", new LoginPayload(memberId, Role.GUEST));
+
+            mockMvc.perform(delete("/api/comment/postId"+parentId)
+                            .session(session))
+                    .andExpect(status().isOk());
+        }
+    }
+
 }
