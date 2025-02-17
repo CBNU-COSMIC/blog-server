@@ -45,6 +45,23 @@ public class Comment {
 
     }
 
+    public Comment modifyContent(UUID userId, String content){
+        validateOwner(userId);
+        return Comment.builder()
+                .id(this.id)
+                .userId(this.userId)
+                .content(content)
+                .postId(this.postId)
+                .parentId(this.parentId)
+                .createdAt(this.createdAt)
+                .build();
+    }
+
+    public void validateOwner(UUID userId){
+        if(!this.userId.equals(userId))
+            throw new BadRequestException("댓글 수정 권한이 없습니다.",CommentErrorCode.NO_AUTHENTICATION);
+    }
+
     private void validateContent(String content) {
         if (content == null || content.isBlank()) {
             throw new BadRequestException(ERROR_CONTENT_IS_NULL, CommentErrorCode.CONTENT_IS_NULL);
