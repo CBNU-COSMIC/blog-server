@@ -88,4 +88,14 @@ public class PostService {
         postRepository.save(updatedPost);
     }
 
+    @Transactional
+    public void deletePost(UUID memberId, UUID postId) {
+        Post post = this.getPost(postId);
+
+        if (post.isNotWritten(memberId)) {
+            throw new BadRequestException("해당 게시글 수정 권한이 없습니다. 게시글 아이디 : %s".formatted(postId), PostErrorCode.UPDATE_PERMISSION_DENIED);
+        }
+
+        postRepository.deleteById(postId);
+    }
 }
