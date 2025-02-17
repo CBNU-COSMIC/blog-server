@@ -34,7 +34,7 @@ public class CommentService {
         UUID commentId = UUID.fromString(stringCommentId);
         Optional<Comment> comment = commentRepository.findById(commentId);
         comment.ifPresent(comment1 -> comment1.validateOwner(memberId));
-        commentRepository.deleteById(memberId);
+        commentRepository.deleteById(commentId);
     }
 
     public CommentResponseDTO modifyComment(String content, String commentId, UUID memberId) {
