@@ -3,11 +3,13 @@ package org.cosmic.cafe.controller;
 import lombok.RequiredArgsConstructor;
 import org.cosmic.cafe.application.post.PostService;
 import org.cosmic.cafe.application.post.dto.PostDetailResponse;
+import org.cosmic.cafe.application.post.dto.PostListResponse;
 import org.cosmic.cafe.controller.annotation.Login;
 import org.cosmic.cafe.dto.PostUpdateRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -20,6 +22,14 @@ public class PostController {
     @GetMapping("/{postId}")
     public ResponseEntity<PostDetailResponse> getPost(@PathVariable UUID postId) {
         PostDetailResponse response = postService.getPostDetail(postId);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PostListResponse>> getPosts(
+            @RequestParam String boardId,
+            @RequestParam(defaultValue = "1") int page) {
+        List<PostListResponse> response = postService.getPostsByBoardId(boardId, page);
         return ResponseEntity.ok(response);
     }
 
