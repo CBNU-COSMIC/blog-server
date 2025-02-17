@@ -7,6 +7,7 @@ import org.cosmic.cafe.exception.type.NotFoundException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -24,7 +25,7 @@ class PostServiceIntegrationTest extends ServiceContext {
             //given
             UUID memberID = UUID.randomUUID();
             Post post = postRepository.save(new Post(
-                    null, memberID, "게시판", "Title1", "Content1", 1L
+                    null, memberID, "게시판", "Title1", "Content1", LocalDateTime.now(),1L
             ));
 
             // when
@@ -52,7 +53,7 @@ class PostServiceIntegrationTest extends ServiceContext {
             // given
             UUID memberId = UUID.randomUUID();
             Post post = postRepository.save(new Post(
-                    null, memberId, "게시판", "Title1", "Content1",1L
+                    null, memberId, "게시판", "Title1", "Content1",LocalDateTime.now(),1L
             ));
 
             // when
@@ -75,7 +76,7 @@ class PostServiceIntegrationTest extends ServiceContext {
             UUID memberId = UUID.randomUUID();
             UUID otherMemberId = UUID.randomUUID();
             Post post = postRepository.save(new Post(
-                    null, memberId, "게시판", "Title1", "Content1",1L
+                    null, memberId, "게시판", "Title1", "Content1",LocalDateTime.now(),1L
             ));
 
             // expected

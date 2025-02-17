@@ -6,6 +6,7 @@ import org.cosmic.cafe.domain.post.exception.PostErrorCode;
 import org.cosmic.cafe.exception.type.BadRequestException;
 import org.cosmic.cafe.infra.post.entity.PostEntity;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -16,13 +17,14 @@ public class Post {
     private String boardId;
     private String title;
     private String content;
+    private LocalDateTime createdAt;
     private Long hits;
 
     private static String ERROR_TITLE_IS_BLANK = "제목은 비어있을 수 없습니다.";
     private static String ERROR_CONTENT_IS_BLANK = "본문은 비어있을 수 없습니다.";
 
     @Builder
-    public Post(UUID id, UUID memberId, String boardId, String title, String content, Long hits){
+    public Post(UUID id, UUID memberId, String boardId, String title, String content, LocalDateTime createdAt, Long hits){
         validateTitle(title);
         validateContent(content);
         validateBoardId(boardId);
@@ -31,6 +33,7 @@ public class Post {
         this.boardId = boardId;
         this.title = makeValidTitle(title);
         this.content = makeValidContent(content);
+        this.createdAt = createdAt;
         this.hits =hits;
     }
 
@@ -41,6 +44,7 @@ public class Post {
                 .boardId(entity.getBoardId())
                 .title(entity.getTitle())
                 .content(entity.getContent())
+                .createdAt(entity.getCreatedAt())
                 .hits(entity.getHits())
                 .build();
     }
