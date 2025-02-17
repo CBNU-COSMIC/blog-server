@@ -32,8 +32,7 @@ public class CommentController {
 
     @PutMapping("{commentId}")
     public ResponseEntity<Comment> modifyComment(@RequestBody ModifyCommentDTO modifyCommentDTO, @PathVariable("commentId")String commentId, @Login UUID memberId){
-        Comment comment = commentService.modifyComment(modifyCommentDTO.getContent(),modifyCommentDTO.getPostId(),
-                modifyCommentDTO.getParentId(),commentId,memberId);
+        Comment comment = commentService.modifyComment(modifyCommentDTO.getContent(),commentId,memberId);
         return ResponseEntity.ok(comment);
     }
 }
