@@ -59,5 +59,21 @@ public class CommentControllerTest extends ControllerTest {
         }
     }
 
+    @Nested
+    class 댓글_삭제{
+
+        @Test
+        void 올바른_댓글삭제는_200을_반환한다() throws Exception {
+            UUID commentId = UUID.randomUUID();
+            UUID memberId = UUID.randomUUID();
+
+            MockHttpSession session = new MockHttpSession();
+            session.setAttribute("loginPayload", new LoginPayload(memberId, Role.GUEST));
+
+            mockMvc.perform(delete("/api/comment/"+commentId)
+                            .session(session))
+                    .andExpect(status().isOk());
+        }
+    }
 
 }
