@@ -6,6 +6,7 @@ import org.cosmic.cafe.domain.Comment.CommentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,6 +25,7 @@ public class CommentService {
                 .postId(postId)
                 .parentId(parentId)
                 .userId(userId)
+                .createdAt(LocalDateTime.now())
                 .build();
 
         return commentRepository.save(comment).getId();
