@@ -51,6 +51,12 @@ public class CommentService {
         return comments.stream().map(comment -> new CommentResponseDTO(comment,memberService.findById(comment.getUserId()))).toList();
     }
 
+    public CommentResponseDTO getCommentById(String commentId){
+        Comment comment = commentRepository.findById(UUID.fromString(commentId))
+                .orElseThrow(()-> new BadRequestException("해당 댓글이 존재하지 않습니다.", CommentErrorCode.NO_SUCH_COMMENT));
+        return new CommentResponseDTO(comment,memberService.findById(comment.getUserId()));
+    }
+
     private static Comment getComment(UUID userId, String content, UUID postId, UUID parentId) {
         Comment comment = Comment.builder()
                 .content(content)
