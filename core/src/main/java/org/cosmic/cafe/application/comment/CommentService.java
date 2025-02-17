@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -42,6 +43,11 @@ public class CommentService {
                 .orElseThrow(() -> new BadRequestException("해당 댓글이 존재하지 않습니다.", CommentErrorCode.NO_SUCH_COMMENT));
         comment.modifyContent(memberId, content);
         return new CommentResponseDTO(comment);
+    }
+
+    public List<CommentResponseDTO> getCommentsByPostId(String postId) {
+        List<Comment> comments = commentRepository.findByPostId(UUID.fromString(postId));
+        return comments.stream().map(CommentResponseDTO::new).toList();
     }
 
     private static Comment getComment(UUID userId, String content, UUID postId, UUID parentId) {
