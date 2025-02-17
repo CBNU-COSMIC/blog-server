@@ -1,5 +1,6 @@
 package org.cosmic.cafe.context;
 
+import org.cosmic.cafe.application.comment.CommentService;
 import org.cosmic.cafe.application.schedule.ScheduleService;
 import org.cosmic.cafe.domain.schedule.ScheduleRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -17,6 +18,9 @@ public abstract class ServiceContext {
 
     @Autowired
     protected ScheduleService scheduleService;
+
+    @Autowired
+    protected CommentService commentService;
 
     @AfterEach
     void clear() {
