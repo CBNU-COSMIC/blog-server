@@ -3,6 +3,7 @@ package org.cosmic.cafe.application.comment.dto;
 import lombok.Getter;
 import lombok.Setter;
 import org.cosmic.cafe.domain.Comment.Comment;
+import org.cosmic.cafe.domain.member.Member;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +14,8 @@ public class CommentResponseDTO {
     private String userName;
     private LocalDateTime createdAt;
 
-    public CommentResponseDTO(Comment comment){
+    public CommentResponseDTO(Comment comment, Member member){
+        this.userName = member.getUserName();
         this.content = comment.getContent();
         this.createdAt = comment.getCreatedAt();
     }
