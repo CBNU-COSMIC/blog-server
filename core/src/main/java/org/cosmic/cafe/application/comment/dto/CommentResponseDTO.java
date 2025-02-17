@@ -15,7 +15,8 @@ public class CommentResponseDTO {
     private LocalDateTime createdAt;
 
     public CommentResponseDTO(Comment comment, Member member){
-        this.userName = member.getUserName();
+        if(member!=null)
+            this.userName = member.getUserName();
         this.content = comment.getContent();
         this.createdAt = comment.getCreatedAt();
     }
