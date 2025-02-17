@@ -137,4 +137,24 @@ public class PostControllerTest extends ControllerTest {
                     .andExpect(status().isOk());
         }
     }
+
+    @Nested
+    class 게시글_삭제 {
+
+        @Test
+        void 정상적인_삭제_요청은_200을_반환한다() throws Exception {
+            // given
+            UUID postId = UUID.randomUUID();
+            UUID memberId = UUID.randomUUID();
+
+            MockHttpSession session = new MockHttpSession();
+            session.setAttribute("loginPayload", new LoginPayload(memberId, Role.GUEST));
+
+            // when & then
+            mockMvc.perform(delete("/api/posts/" + postId)
+                    .session(session)
+                    .contentType("application/json"))
+                    .andExpect(status().isOk());
+        }
+    }
 }
