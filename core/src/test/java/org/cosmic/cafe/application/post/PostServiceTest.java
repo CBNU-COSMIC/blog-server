@@ -168,4 +168,47 @@ class PostServiceIntegrationTest extends ServiceContext {
                     postService.update("Title1", "Content1", memberId, nonExistentPostId));
         }
     }
+
+    @Nested
+    class 게시글_삭제_테스트 {
+        @Test
+        void 본인이_게시글을_삭제할_수_있다() {
+            //given
+            UUID memberId = UUID.randomUUID();
+            Post post = postRepository.save(new Post(
+                    null, memberId, "게시판", "Title1", "Content1",LocalDateTime.now(),1L
+            ));
+
+            // when
+            postService.deletePost(memberId, post.getId());
+
+            // then
+            assertThat(postRepository.findById(post.getId())).isEmpty();
+        }
+
+        @Test
+        void 다른_사용자의_게시글을_삭제_할_수_없다() {
+            //given
+            UUID memberId = UUID.randomUUID();
+            UUID otherMemberId = UUID.randomUUID();
+            Post post = postRepository.save(new Post(
+                    null, memberId, "게시판", "Title1", "Content1",LocalDateTime.now(),1L
+            ));
+
+            // expected
+            assertThrows(BadRequestException.class, () ->
+                    postService.deletePost(otherMemberId, post.getId()));
+        }
+
+        @Test
+        void 존재하지_않는_게시글은_삭제할_수_없다() {
+            // given
+            UUID memberId = UUID.randomUUID();
+            UUID nonExistentPostId = UUID.randomUUID();
+
+            // expected
+            assertThrows(NotFoundException.class, () ->
+                    postService.deletePost(memberId, nonExistentPostId));
+        }
+    }
 }
