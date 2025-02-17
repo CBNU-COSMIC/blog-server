@@ -57,6 +57,11 @@ public class CommentService {
         return new CommentResponseDTO(comment,memberService.findById(comment.getUserId()));
     }
 
+    public List<CommentResponseDTO> getCommentByParentId(String parentId) {
+        List<Comment> comments = commentRepository.findByParentId(UUID.fromString(parentId));
+        return comments.stream().map(comment -> new CommentResponseDTO(comment,memberService.findById(comment.getUserId()))).toList();
+    }
+
     private static Comment getComment(UUID userId, String content, UUID postId, UUID parentId) {
         Comment comment = Comment.builder()
                 .content(content)

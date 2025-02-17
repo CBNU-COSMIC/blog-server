@@ -50,4 +50,10 @@ public class CommentController {
         return ResponseEntity.ok(comment);
     }
 
+    @GetMapping("/parentId/{parentId}")
+    public ResponseEntity<List<CommentResponseDTO>> getCommentByParentId(@PathVariable("parentId")String parentId){
+        List<CommentResponseDTO> comments = commentService.getCommentByParentId(parentId);
+        return ResponseEntity.ok(comments);
+    }
+
 }
