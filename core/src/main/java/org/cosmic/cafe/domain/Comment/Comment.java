@@ -45,9 +45,16 @@ public class Comment {
 
     }
 
-    public void modifyContent(UUID userId, String content){
+    public Comment modifyContent(UUID userId, String content){
         validateOwner(userId);
-        this.content = content;
+        return Comment.builder()
+                .id(this.id)
+                .userId(this.userId)
+                .content(content)
+                .postId(this.postId)
+                .parentId(this.parentId)
+                .createdAt(this.createdAt)
+                .build();
     }
 
     public void validateOwner(UUID userId){

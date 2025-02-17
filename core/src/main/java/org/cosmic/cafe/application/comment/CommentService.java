@@ -41,8 +41,9 @@ public class CommentService {
     public CommentResponseDTO modifyComment(String content, String commentId, UUID memberId) {
         Comment comment = commentRepository.findById(UUID.fromString(commentId))
                 .orElseThrow(() -> new BadRequestException("해당 댓글이 존재하지 않습니다.", CommentErrorCode.NO_SUCH_COMMENT));
-        comment.modifyContent(memberId, content);
-        return new CommentResponseDTO(comment,memberService.findById(comment.getUserId()));
+        Comment modifiedContent = comment.modifyContent(memberId, content);
+        commentRepository.save(modifiedContent);
+        return new CommentResponseDTO(modifiedContent,memberService.findById(modifiedContent.getUserId()));
     }
 
     public List<CommentResponseDTO> getCommentsByPostId(String postId) {
