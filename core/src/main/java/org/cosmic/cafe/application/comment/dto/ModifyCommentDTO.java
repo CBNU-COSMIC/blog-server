@@ -9,6 +9,4 @@ import java.util.UUID;
 @Setter
 public class ModifyCommentDTO {
     private String content;
-    private UUID postId;
-    private UUID parentId;
 }
