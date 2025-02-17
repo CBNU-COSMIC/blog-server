@@ -6,6 +6,7 @@ import org.cosmic.cafe.domain.Comment.CommentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -16,7 +17,16 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public Long saveComment(UUID memberId, String content, UUID postId, UUID parentId) {
-        Comment comment = Comment
+    public UUID saveComment(UUID userId, String content, UUID postId, UUID parentId) {
+
+        Comment comment = Comment.builder()
+                .content(content)
+                .postId(postId)
+                .parentId(parentId)
+                .userId(userId)
+                .build();
+
+        return commentRepository.save(comment).getId();
     }
+
 }
