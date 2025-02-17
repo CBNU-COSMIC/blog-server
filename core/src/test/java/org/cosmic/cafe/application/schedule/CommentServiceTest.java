@@ -83,5 +83,16 @@ public class CommentServiceTest extends ServiceContext {
             //expect
             Assertions.assertThrows(BadRequestException.class,()->commentService.deleteComment(commentId,UUID.randomUUID()));
         }
+
+        @Test
+        void 삭제하려는_댓글의_ID가_존재하지_않을경우_예외를_터뜨린다(){
+            //given
+            UUID memberId = UUID.randomUUID();
+            Comment savedComment = commentRepository.save(Comment.builder().userId(memberId).content("content").build());
+            String commentId = savedComment.getId().toString();
+
+            //expect
+            Assertions.assertThrows(BadRequestException.class, ()->commentService.deleteComment(UUID.randomUUID().toString(),memberId));
+        }
     }
 }
