@@ -17,9 +17,14 @@ public class PostService {
 
     private final PostRepository postRepository;
 
+    public Post getPost(UUID postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException("해당 게시글이 존재하지 않습니다.", PostErrorCode.NOT_FOUND));
+    }
+
     @Transactional
     public void update(String title, String content, UUID memberId, UUID postId) {
-        Post post = getPostById(postId);
+        Post post = this.getPost(postId);
 
         if (post.isNotWritten(memberId)) {
             throw new BadRequestException("해당 게시글 수정 권한이 없습니다. 게시글 아이디 : %s".formatted(postId), PostErrorCode.UPDATE_PERMISSION_DENIED);
@@ -35,11 +40,6 @@ public class PostService {
                 .build();
 
         postRepository.save(updatedPost);
-    }
-
-    private Post getPostById(UUID postId) {
-        return postRepository.findById(postId)
-                .orElseThrow(() -> new NotFoundException("게시글이 존재하지 않습니다.", PostErrorCode.NOT_FOUND));
     }
 
 }
