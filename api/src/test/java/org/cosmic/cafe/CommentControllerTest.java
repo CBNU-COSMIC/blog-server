@@ -1,15 +1,15 @@
 package org.cosmic.cafe;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.cosmic.cafe.application.comment.dto.ModifyCommentDTO;
 import org.cosmic.cafe.application.comment.dto.SaveCommentDTO;
 import org.cosmic.cafe.context.ControllerTest;
 import org.cosmic.cafe.dto.LoginPayload;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import static org.mockito.BDDMockito.given;
 import org.springframework.mock.web.MockHttpSession;
 import org.cosmic.cafe.domain.member.Role;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -38,7 +38,26 @@ public class CommentControllerTest extends ControllerTest {
                     .andExpect(status().isOk());
         }
     }
-    
+
+    @Nested
+    class 댓글_수정{
+
+        @Test
+        void 올바른_댓글수정은_200을_반환한다() throws Exception {
+            UUID commentId = UUID.randomUUID();
+            ModifyCommentDTO modifyCommentDTO = new ModifyCommentDTO();
+            modifyCommentDTO.setContent("modify content");
+            UUID memberId = UUID.randomUUID();
+
+            MockHttpSession session = new MockHttpSession();
+            session.setAttribute("loginPayload", new LoginPayload(memberId, Role.GUEST));
+
+            mockMvc.perform(put("/api/comment/"+commentId)
+                            .session(session).contentType("application/json")
+                            .content(objectMapper.writeValueAsString(modifyCommentDTO)))
+                    .andExpect(status().isOk());
+        }
+    }
 
 
 }
