@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.cosmic.cafe.domain.post.Post;
 import org.cosmic.cafe.domain.post.PostRepository;
 import org.cosmic.cafe.infra.post.entity.PostEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -57,4 +59,9 @@ public class PostCoreRepository implements PostRepository {
         return postEntities.stream().map(Post::of).toList();
     }
 
+    @Override
+    public Page<Post> findByBoardIdOrderByCreatedAtDesc(String boardId, Pageable pageable) {
+        Page<PostEntity> postEntities = postJpaRepository.findByBoardIdOrderByCreatedAtDesc(boardId, pageable);
+        return postEntities.map(Post::of);
+    }
 }
