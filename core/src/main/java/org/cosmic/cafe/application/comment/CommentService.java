@@ -32,8 +32,9 @@ public class CommentService {
 
     public void deleteComment(String stringCommentId, UUID memberId) {
         UUID commentId = UUID.fromString(stringCommentId);
-        Optional<Comment> comment = commentRepository.findById(commentId);
-        comment.ifPresent(comment1 -> comment1.validateOwner(memberId));
+        Comment comment = commentRepository.findById(commentId)
+                        .orElseThrow(() -> new BadRequestException("해당 댓글이 존재하지 않습니다.", CommentErrorCode.NO_SUCH_COMMENT));
+        comment.validateOwner(memberId);
         commentRepository.deleteById(commentId);
     }
 
