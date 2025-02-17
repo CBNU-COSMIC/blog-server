@@ -2,6 +2,7 @@ package org.cosmic.cafe.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.cosmic.cafe.application.post.PostService;
+import org.cosmic.cafe.application.post.dto.PostCreationPayload;
 import org.cosmic.cafe.application.post.dto.PostDetailResponse;
 import org.cosmic.cafe.application.post.dto.PostListResponse;
 import org.cosmic.cafe.controller.annotation.Login;
@@ -18,6 +19,12 @@ import java.util.UUID;
 public class PostController {
 
     private final PostService postService;
+
+    @PostMapping
+    public ResponseEntity<Void> createPost(@Login UUID memberId, @RequestBody PostCreationPayload postCreationPayload) {
+        postService.createPost(memberId, postCreationPayload);
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping("/{postId}")
     public ResponseEntity<PostDetailResponse> getPost(@PathVariable UUID postId) {
