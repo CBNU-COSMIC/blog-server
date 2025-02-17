@@ -1,5 +1,6 @@
 package org.cosmic.cafe.application.post;
 
+import org.cosmic.cafe.application.post.dto.PostCreationPayload;
 import org.cosmic.cafe.application.post.dto.PostListResponse;
 import org.cosmic.cafe.context.ServiceContext;
 import org.cosmic.cafe.domain.post.Post;
@@ -18,6 +19,29 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PostServiceIntegrationTest extends ServiceContext {
+
+    @Nested
+    class 게시글_생성_테스트 {
+
+        @Test
+        void 게시글을_정상적으로_생성할_수_있다() {
+            // given
+            UUID memberId = UUID.randomUUID();
+            PostCreationPayload postCreationPayload = new PostCreationPayload(
+                    "Title",
+                    "Content",
+                    "게시판"
+            );
+
+            // when
+            postService.createPost(memberId, postCreationPayload);
+
+            // then
+            List<Post> posts = postRepository.findAll();
+            assertThat(posts.size()).isEqualTo(1);
+            assertThat(posts.get(0).getTitle()).isEqualTo("Title");
+        }
+    }
 
     @Nested
     class 게시글_조회_테스트 {
