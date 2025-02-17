@@ -2,6 +2,7 @@ package org.cosmic.cafe.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.cosmic.cafe.application.comment.CommentService;
+import org.cosmic.cafe.application.comment.dto.CommentResponseDTO;
 import org.cosmic.cafe.application.comment.dto.ModifyCommentDTO;
 import org.cosmic.cafe.application.comment.dto.SaveCommentDTO;
 import org.cosmic.cafe.controller.annotation.Login;
@@ -31,8 +32,8 @@ public class CommentController {
     }
 
     @PutMapping("{commentId}")
-    public ResponseEntity<Comment> modifyComment(@RequestBody ModifyCommentDTO modifyCommentDTO, @PathVariable("commentId")String commentId, @Login UUID memberId){
-        Comment comment = commentService.modifyComment(modifyCommentDTO.getContent(),commentId,memberId);
+    public ResponseEntity<CommentResponseDTO> modifyComment(@RequestBody ModifyCommentDTO modifyCommentDTO, @PathVariable("commentId")String commentId, @Login UUID memberId){
+        CommentResponseDTO comment = commentService.modifyComment(modifyCommentDTO.getContent(),commentId,memberId);
         return ResponseEntity.ok(comment);
     }
 }
