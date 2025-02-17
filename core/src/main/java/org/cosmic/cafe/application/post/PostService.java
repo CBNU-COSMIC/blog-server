@@ -1,6 +1,7 @@
 package org.cosmic.cafe.application.post;
 
 import lombok.RequiredArgsConstructor;
+import org.cosmic.cafe.application.post.dto.PostCreationPayload;
 import org.cosmic.cafe.application.post.dto.PostDetailResponse;
 import org.cosmic.cafe.application.post.dto.PostListResponse;
 import org.cosmic.cafe.domain.post.Post;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -23,6 +25,21 @@ import java.util.stream.Collectors;
 public class PostService {
 
     private final PostRepository postRepository;
+
+    @Transactional
+    public void createPost(UUID memberId, PostCreationPayload postCreationPayload) {
+        Post post = new Post(
+                null,
+                memberId,
+                postCreationPayload.boardId(),
+                postCreationPayload.title(),
+                postCreationPayload.content(),
+                LocalDateTime.now(),
+                0L
+        );
+
+        postRepository.save(post);
+    }
 
     public Post getPost(UUID postId) {
         return postRepository.findById(postId)
