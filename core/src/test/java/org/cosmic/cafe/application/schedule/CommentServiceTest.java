@@ -95,4 +95,44 @@ public class CommentServiceTest extends ServiceContext {
             Assertions.assertThrows(BadRequestException.class, ()->commentService.deleteComment(UUID.randomUUID().toString(),memberId));
         }
     }
+
+    @Nested
+    class 댓글_수정_테스트{
+
+        @Test
+        void 본인_댓글을_수정할_수_있다(){
+            //given
+            UUID memberId = UUID.randomUUID();
+            Comment savedComment = commentRepository.save(Comment.builder().userId(memberId).content("content").build());
+            String commentId = savedComment.getId().toString();
+
+            //when
+            commentService.modifyComment("new content",commentId,memberId);
+
+            //then
+            assertThat(commentRepository.findById(UUID.fromString(commentId)).orElse(null).getContent()).isEqualTo("new content");
+        }
+
+        @Test
+        void 본인이_아닌_댓글은_수정할_수_없다(){
+            //given
+            UUID memberId = UUID.randomUUID();
+            Comment savedComment = commentRepository.save(Comment.builder().userId(memberId).content("content").build());
+            String commentId = savedComment.getId().toString();
+
+            //expect
+            Assertions.assertThrows(BadRequestException.class,()->commentService.modifyComment("new content",commentId,UUID.randomUUID()));
+        }
+
+        @Test
+        void 수정하려는_댓글의_ID가_존재하지_않을경우_예외를_터뜨린다(){
+            //given
+            UUID memberId = UUID.randomUUID();
+            Comment savedComment = commentRepository.save(Comment.builder().userId(memberId).content("content").build());
+            String commentId = savedComment.getId().toString();
+
+            //expect
+            Assertions.assertThrows(BadRequestException.class, ()->commentService.modifyComment("new content",UUID.randomUUID().toString(),memberId));
+        }
+    }
 }
