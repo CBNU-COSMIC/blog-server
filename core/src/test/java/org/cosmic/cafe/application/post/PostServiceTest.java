@@ -1,5 +1,6 @@
 package org.cosmic.cafe.application.post;
 
+import org.cosmic.cafe.application.post.dto.PostListResponse;
 import org.cosmic.cafe.context.ServiceContext;
 import org.cosmic.cafe.domain.post.Post;
 import org.cosmic.cafe.exception.type.BadRequestException;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -42,6 +44,52 @@ class PostServiceIntegrationTest extends ServiceContext {
             assertThatThrownBy(() -> postService.getPost(UUID.randomUUID()))
                     .isInstanceOf(NotFoundException.class)
                     .hasMessageContaining("게시글이 존재하지 않습니다.");
+        }
+
+        @Test
+        void 게시판의_글_목록을_10개씩_불러와_조회할_수_있다() {
+            // given
+            String boardId = "게시판";
+            UUID memberId = UUID.randomUUID();
+
+            for(int i = 1; i <= 11; i++) {
+                postRepository.save(new Post(
+                        null,
+                        memberId,
+                        boardId,
+                        "Title" + i,
+                        "Content" + i,
+                        LocalDateTime.now().minusHours(i),
+                        1L
+
+                ));
+            }
+
+            // when
+            List<PostListResponse> firstPage = postService.getPostsByBoardId(boardId, 1);
+            List<PostListResponse> secondPage = postService.getPostsByBoardId(boardId, 2);
+
+            // then
+            assertAll(
+                    () -> assertThat(firstPage.size()).isEqualTo(10),
+                    () -> assertThat(secondPage.size()).isEqualTo(1),
+                    () -> assertThat(firstPage.get(0).getTitle()).isEqualTo("Title1"),
+                    () -> assertThat(firstPage.get(9).getTitle()).isEqualTo("Title10"),
+                    () -> assertThat(secondPage.get(0).getTitle()).isEqualTo("Title11")
+            );
+        }
+
+        @Test
+        void 게시글이_없는_페이지를_조회하면_빈_리스트가_반환된다() {
+            // given
+            String boardId = "게시판";
+            int nonExistentPage = 999;
+
+            // when
+            List<PostListResponse> posts = postService.getPostsByBoardId(boardId, nonExistentPage);
+
+            // then
+            assertThat(posts.size()).isEqualTo(0);
         }
     }
 
