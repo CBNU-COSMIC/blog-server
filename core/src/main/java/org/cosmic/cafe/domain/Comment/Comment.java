@@ -45,6 +45,11 @@ public class Comment {
 
     }
 
+    public void modifyContent(UUID userId, String content){
+        validateOwner(userId);
+        this.content = content;
+    }
+
     public void validateOwner(UUID userId){
         if(this.userId != userId)
             throw new BadRequestException("댓글 수정 권한이 없습니다.",CommentErrorCode.NO_AUTHENTICATION);
