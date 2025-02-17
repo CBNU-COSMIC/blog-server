@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,6 +51,43 @@ public class CommentServiceTest extends ServiceContext {
 
             //then
             assertThat(comments).extracting(Comment::getContent).containsExactlyInAnyOrder("content1");
+        }
+
+        @Test
+        void 댓글_아이디로_댓글을_조회할_수_있다(){
+            //given
+            UUID postID = UUID.randomUUID();
+            Comment comment = Comment.builder()
+                    .content("content1").postId(postID).build();
+
+            Comment saved = commentRepository.save(comment);
+
+            //when
+            Comment comment1 = commentRepository.findById(saved.getId()).orElse(null);
+
+            //then
+            assertThat(comment1).isNotNull();
+        }
+
+        @Test
+        void 댓글_부모_아이디로_댓글을_조회할_수_있다(){
+            //given
+            UUID postID = UUID.randomUUID();
+            UUID parentID = UUID.randomUUID();
+            Comment comment = Comment.builder()
+                    .content("content1").postId(postID).parentId(parentID).build();
+
+            Comment comment2 = Comment.builder()
+                    .content("content2").postId(postID).parentId(parentID).build();
+
+            commentRepository.save(comment);
+            commentRepository.save(comment2);
+
+            //when
+            List<Comment> comments = commentRepository.findByParentId(parentID);
+
+            //then
+            assertThat(comments).extracting(Comment::getContent).containsExactlyInAnyOrder("content1","content2");
         }
 
     }
