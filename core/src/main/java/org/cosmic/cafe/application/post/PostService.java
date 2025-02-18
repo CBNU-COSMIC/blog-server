@@ -24,7 +24,7 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public Post getPost(UUID postId) {
+    private Post getPost(UUID postId) {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new NotFoundException("해당 게시글이 존재하지 않습니다.", PostErrorCode.NOT_FOUND));
     }
