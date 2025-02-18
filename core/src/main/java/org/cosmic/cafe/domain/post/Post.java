@@ -12,6 +12,7 @@ import java.util.UUID;
 public class Post {
 
     private UUID id;
+    private UUID memberId;
     private String boardId;
     private String title;
     private String content;
@@ -21,11 +22,12 @@ public class Post {
     private static String ERROR_CONTENT_IS_BLANK = "본문은 비어있을 수 없습니다.";
 
     @Builder
-    public Post(UUID id, String boardId, String title, String content, Long hits){
+    public Post(UUID id, UUID memberId, String boardId, String title, String content, Long hits){
         validateTitle(title);
         validateContent(content);
         validateBoardId(boardId);
         this.id = id;
+        this.memberId = memberId;
         this.boardId = boardId;
         this.title = makeValidTitle(title);
         this.content = makeValidContent(content);
@@ -35,11 +37,16 @@ public class Post {
     public static Post of(PostEntity entity){
         return Post.builder()
                 .id(entity.getId())
+                .memberId(entity.getMemberId())
                 .boardId(entity.getBoardId())
                 .title(entity.getTitle())
                 .content(entity.getContent())
                 .hits(entity.getHits())
                 .build();
+    }
+
+    public boolean isNotWritten(UUID memberId) {
+        return !this.memberId.equals(memberId);
     }
 
     private void validateBoardId(String boardId){
