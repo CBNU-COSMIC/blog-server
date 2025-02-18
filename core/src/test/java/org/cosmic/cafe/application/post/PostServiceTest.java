@@ -1,5 +1,6 @@
 package org.cosmic.cafe.application.post;
 
+import org.cosmic.cafe.application.post.dto.PostDetailResponse;
 import org.cosmic.cafe.application.post.dto.PostListResponse;
 import org.cosmic.cafe.context.ServiceContext;
 import org.cosmic.cafe.domain.post.Post;
@@ -23,7 +24,7 @@ class PostServiceIntegrationTest extends ServiceContext {
     class 게시글_조회_테스트 {
 
         @Test
-        void 특정_게시글을_조회할_수_있다() {
+        void 특정_게시글을_상세_조회할_수_있다() {
             //given
             UUID memberID = UUID.randomUUID();
             Post post = postRepository.save(new Post(
@@ -31,17 +32,18 @@ class PostServiceIntegrationTest extends ServiceContext {
             ));
 
             // when
-            Post foundPost = postService.getPost(post.getId());
+            PostDetailResponse foundPost = postService.getPostDetail(post.getId());
 
             // then
-            assertThat(foundPost.getId()).isEqualTo(post.getId());
             assertThat(foundPost.getTitle()).isEqualTo(post.getTitle());
+            assertThat(foundPost.getContent()).isEqualTo(post.getContent());
+
         }
 
         @Test
         void 존재하지_않는_게시글을_조회하면_예외가_발생한다() {
             // expect
-            assertThatThrownBy(() -> postService.getPost(UUID.randomUUID()))
+            assertThatThrownBy(() -> postService.getPostDetail(UUID.randomUUID()))
                     .isInstanceOf(NotFoundException.class)
                     .hasMessageContaining("게시글이 존재하지 않습니다.");
         }
