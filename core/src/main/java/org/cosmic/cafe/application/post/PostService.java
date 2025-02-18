@@ -56,6 +56,7 @@ public class PostService {
     }
 
     public List<PostListResponse> getPostsByBoardId(String boardId, int page) {
+        // TODO: LIMIT, OFFSET SQL을 사용하여 최적화 필요
         Pageable pageable = PageRequest.of(page-1, 10);
         Page<Post> posts = postRepository.findByBoardIdOrderByCreatedAtDesc(boardId, pageable);
 
