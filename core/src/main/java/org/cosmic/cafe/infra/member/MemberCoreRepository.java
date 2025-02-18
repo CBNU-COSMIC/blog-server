@@ -23,7 +23,6 @@ public class MemberCoreRepository implements MemberRepository {
         return Member.of(savedMemberEntity);
     }
 
-
     @Override
     public Optional<Member> findById(UUID id) {
         Optional<MemberEntity> memberEntity = memberJpaRepository.findById(id);
@@ -31,7 +30,7 @@ public class MemberCoreRepository implements MemberRepository {
     }
 
     @Override
-    public Optional<Member> findByMemberId(String memberId){
+    public Optional<Member> findByMemberId(String memberId) {
         return memberJpaRepository.findByMemberId(memberId).map(Member::of);
     }
 
@@ -40,13 +39,12 @@ public class MemberCoreRepository implements MemberRepository {
         List<MemberEntity> memberEntities = memberJpaRepository.findAll();
 
         return memberEntities.stream()
-            .map(Member::of)
-            .toList();
+                .map(Member::of)
+                .toList();
     }
 
     @Override
     public void deleteById(UUID id) {
-
         memberJpaRepository.deleteById(id);
     }
 }

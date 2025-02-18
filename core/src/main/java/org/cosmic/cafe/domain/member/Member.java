@@ -40,8 +40,7 @@ public class Member {
 
     @Builder
     public Member(UUID id, String name, String memberId, String nickname, String password,
-        String role,
-        String avatar, String phoneNumber, String studentNumber, LocalDateTime birth,
+        String role, String avatar, String phoneNumber, String studentNumber, LocalDateTime birth,
         String email) {
 
         validateName(name);
