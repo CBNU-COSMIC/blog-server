@@ -64,10 +64,6 @@ class PostServiceIntegrationTest extends ServiceContext {
             // then
             assertThat(foundPost.getId()).isEqualTo(post.getId());
             assertThat(foundPost.getTitle()).isEqualTo(post.getTitle());
-          
-            PostDetailResponse foundPost = postService.getPostDetail(post.getId());
-
-            // then
             assertThat(foundPost.getTitle()).isEqualTo(post.getTitle());
             assertThat(foundPost.getContent()).isEqualTo(post.getContent());
         }
@@ -75,7 +71,7 @@ class PostServiceIntegrationTest extends ServiceContext {
         @Test
         void 존재하지_않는_게시글을_조회하면_예외가_발생한다() {
             // expect
-            assertThatThrownBy(() -> postService.getPost(UUID.randomUUID()))
+            assertThatThrownBy(() -> postService.getPost(UUID.randomUUID()));
             assertThatThrownBy(() -> postService.getPostDetail(UUID.randomUUID()))
                     .isInstanceOf(NotFoundException.class)
                     .hasMessageContaining("게시글이 존재하지 않습니다.");
