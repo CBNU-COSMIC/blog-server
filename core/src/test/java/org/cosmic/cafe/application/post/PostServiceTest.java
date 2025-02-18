@@ -1,5 +1,6 @@
 package org.cosmic.cafe.application.post;
 
+import org.cosmic.cafe.application.post.dto.PostCreationPayload;
 import org.cosmic.cafe.application.post.dto.PostDetailResponse;
 import org.cosmic.cafe.application.post.dto.PostListResponse;
 import org.cosmic.cafe.context.ServiceContext;
@@ -24,10 +25,33 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class PostServiceIntegrationTest extends ServiceContext {
 
     @Nested
+    class 게시글_생성_테스트 {
+
+        @Test
+        void 게시글을_정상적으로_생성할_수_있다() {
+            // given
+            UUID memberId = UUID.randomUUID();
+            PostCreationPayload postCreationPayload = new PostCreationPayload(
+                    "Title",
+                    "Content",
+                    "게시판"
+            );
+
+            // when
+            postService.createPost(memberId, postCreationPayload);
+
+            // then
+            List<Post> posts = postRepository.findAll();
+            assertThat(posts.size()).isEqualTo(1);
+            assertThat(posts.get(0).getTitle()).isEqualTo("Title");
+        }
+    }
+
+    @Nested
     class 게시글_조회_테스트 {
 
         @Test
-        void 특정_게시글을_상세_조회할_수_있다() {
+        void 특정_게시글을_조회할_수_있다() {
             //given
             UUID memberID = UUID.randomUUID();
             Post post = postRepository.save(new Post(
@@ -35,17 +59,19 @@ class PostServiceIntegrationTest extends ServiceContext {
             ));
 
             // when
-            PostDetailResponse foundPost = postService.getPostDetail(post.getId());
+            Post foundPost = postService.getPost(post.getId());
 
             // then
+            assertThat(foundPost.getId()).isEqualTo(post.getId());
+            assertThat(foundPost.getTitle()).isEqualTo(post.getTitle());
             assertThat(foundPost.getTitle()).isEqualTo(post.getTitle());
             assertThat(foundPost.getContent()).isEqualTo(post.getContent());
-
         }
 
         @Test
         void 존재하지_않는_게시글을_조회하면_예외가_발생한다() {
             // expect
+            assertThatThrownBy(() -> postService.getPost(UUID.randomUUID()));
             assertThatThrownBy(() -> postService.getPostDetail(UUID.randomUUID()))
                     .isInstanceOf(NotFoundException.class)
                     .hasMessageContaining("게시글이 존재하지 않습니다.");
@@ -147,6 +173,49 @@ class PostServiceIntegrationTest extends ServiceContext {
             // expected
             assertThrows(NotFoundException.class, () ->
                     postService.update("Title1", "Content1", memberId, nonExistentPostId));
+        }
+    }
+
+    @Nested
+    class 게시글_삭제_테스트 {
+        @Test
+        void 본인이_게시글을_삭제할_수_있다() {
+            //given
+            UUID memberId = UUID.randomUUID();
+            Post post = postRepository.save(new Post(
+                    null, memberId, "게시판", "Title1", "Content1",LocalDateTime.now(),1L
+            ));
+
+            // when
+            postService.deletePost(memberId, post.getId());
+
+            // then
+            assertThat(postRepository.findById(post.getId())).isEmpty();
+        }
+
+        @Test
+        void 다른_사용자의_게시글을_삭제_할_수_없다() {
+            //given
+            UUID memberId = UUID.randomUUID();
+            UUID otherMemberId = UUID.randomUUID();
+            Post post = postRepository.save(new Post(
+                    null, memberId, "게시판", "Title1", "Content1",LocalDateTime.now(),1L
+            ));
+
+            // expected
+            assertThrows(BadRequestException.class, () ->
+                    postService.deletePost(otherMemberId, post.getId()));
+        }
+
+        @Test
+        void 존재하지_않는_게시글은_삭제할_수_없다() {
+            // given
+            UUID memberId = UUID.randomUUID();
+            UUID nonExistentPostId = UUID.randomUUID();
+
+            // expected
+            assertThrows(NotFoundException.class, () ->
+                    postService.deletePost(memberId, nonExistentPostId));
         }
     }
 }

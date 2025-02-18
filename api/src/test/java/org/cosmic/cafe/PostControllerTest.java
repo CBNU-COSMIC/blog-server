@@ -1,5 +1,6 @@
 package org.cosmic.cafe;
 
+import org.cosmic.cafe.application.post.dto.PostCreationPayload;
 import org.cosmic.cafe.application.post.dto.PostDetailResponse;
 import org.cosmic.cafe.application.post.dto.PostListResponse;
 import org.cosmic.cafe.context.ControllerTest;
@@ -17,6 +18,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -25,6 +28,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 public class PostControllerTest extends ControllerTest {
+
+    @Nested
+    class 게시글_생성 {
+
+        @Test
+        void 정상적인_게시글_생성_요청은_200을_반환한다() throws Exception {
+            // given
+            UUID memberId = UUID.randomUUID();
+            String boardId = "게시판";
+            String title = "Title1";
+            String content = "Content1";
+
+            PostCreationPayload postCreationPayload = new PostCreationPayload(boardId, title, content);
+
+            MockHttpSession session = new MockHttpSession();
+            session.setAttribute("loginPayload", new LoginPayload(memberId, Role.GUEST));
+
+            // when & then
+            mockMvc.perform(post("/api/posts")
+                    .session(session)
+                    .contentType("application/json")
+                    .content(objectMapper.writeValueAsString(postCreationPayload)))
+                    .andExpect(status().isOk());
+        }
+    }
 
     @Nested
     class 게시글_조회 {
@@ -111,6 +139,26 @@ public class PostControllerTest extends ControllerTest {
                             .session(session)
                             .contentType("application/json")
                             .content(objectMapper.writeValueAsString(postUpdateRequest)))
+                    .andExpect(status().isOk());
+        }
+    }
+
+    @Nested
+    class 게시글_삭제 {
+
+        @Test
+        void 정상적인_삭제_요청은_200을_반환한다() throws Exception {
+            // given
+            UUID postId = UUID.randomUUID();
+            UUID memberId = UUID.randomUUID();
+
+            MockHttpSession session = new MockHttpSession();
+            session.setAttribute("loginPayload", new LoginPayload(memberId, Role.GUEST));
+
+            // when & then
+            mockMvc.perform(delete("/api/posts/" + postId)
+                    .session(session)
+                    .contentType("application/json"))
                     .andExpect(status().isOk());
         }
     }
