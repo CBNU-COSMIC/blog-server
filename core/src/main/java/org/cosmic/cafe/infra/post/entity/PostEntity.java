@@ -32,6 +32,7 @@ public class PostEntity {
 
     @Builder
     public PostEntity(UUID id, UUID memberId, String boardId, String title, String content, LocalDateTime createdAt, Long hits) {
+
         this.id = id;
         this.memberId = memberId;
         this.boardId = boardId;
