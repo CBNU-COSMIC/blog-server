@@ -24,17 +24,21 @@ public class PostEntity {
 
     private String content;
 
+    private LocalDateTime createdAt;
+
     private Long hits;
 
     protected PostEntity(){}
 
     @Builder
-    public PostEntity(UUID id, UUID memberId, String boardId, String title, String content, Long hits) {
+    public PostEntity(UUID id, UUID memberId, String boardId, String title, String content, LocalDateTime createdAt, Long hits) {
+
         this.id = id;
         this.memberId = memberId;
         this.boardId = boardId;
         this.title = title;
         this.content = content;
+        this.createdAt = createdAt;
         this.hits = hits;
     }
 
@@ -45,6 +49,7 @@ public class PostEntity {
                 .boardId(post.getBoardId())
                 .title(post.getTitle())
                 .content(post.getContent())
+                .createdAt(post.getCreatedAt())
                 .hits(post.getHits())
                 .build();
     }

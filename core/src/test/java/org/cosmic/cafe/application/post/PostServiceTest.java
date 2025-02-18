@@ -1,5 +1,7 @@
 package org.cosmic.cafe.application.post;
 
+import org.cosmic.cafe.application.post.dto.PostDetailResponse;
+import org.cosmic.cafe.application.post.dto.PostListResponse;
 import org.cosmic.cafe.context.ServiceContext;
 import org.cosmic.cafe.domain.post.Post;
 import org.cosmic.cafe.exception.type.BadRequestException;
@@ -7,6 +9,12 @@ import org.cosmic.cafe.exception.type.NotFoundException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -16,6 +24,81 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class PostServiceIntegrationTest extends ServiceContext {
 
     @Nested
+    class 게시글_조회_테스트 {
+
+        @Test
+        void 특정_게시글을_상세_조회할_수_있다() {
+            //given
+            UUID memberID = UUID.randomUUID();
+            Post post = postRepository.save(new Post(
+                    null, memberID, "게시판", "Title1", "Content1", LocalDateTime.now(),1L
+            ));
+
+            // when
+            PostDetailResponse foundPost = postService.getPostDetail(post.getId());
+
+            // then
+            assertThat(foundPost.getTitle()).isEqualTo(post.getTitle());
+            assertThat(foundPost.getContent()).isEqualTo(post.getContent());
+
+        }
+
+        @Test
+        void 존재하지_않는_게시글을_조회하면_예외가_발생한다() {
+            // expect
+            assertThatThrownBy(() -> postService.getPostDetail(UUID.randomUUID()))
+                    .isInstanceOf(NotFoundException.class)
+                    .hasMessageContaining("게시글이 존재하지 않습니다.");
+        }
+
+        @Test
+        void 게시판의_글_목록을_10개씩_불러와_조회할_수_있다() {
+            // given
+            String boardId = "게시판";
+            UUID memberId = UUID.randomUUID();
+
+            for(int i = 1; i <= 11; i++) {
+                postRepository.save(new Post(
+                        null,
+                        memberId,
+                        boardId,
+                        "Title" + i,
+                        "Content" + i,
+                        LocalDateTime.now().minusHours(i),
+                        1L
+
+                ));
+            }
+
+            // when
+            List<PostListResponse> firstPage = postService.getPostsByBoardId(boardId, 1);
+            List<PostListResponse> secondPage = postService.getPostsByBoardId(boardId, 2);
+
+            // then
+            assertAll(
+                    () -> assertThat(firstPage.size()).isEqualTo(10),
+                    () -> assertThat(secondPage.size()).isEqualTo(1),
+                    () -> assertThat(firstPage.get(0).getTitle()).isEqualTo("Title1"),
+                    () -> assertThat(firstPage.get(9).getTitle()).isEqualTo("Title10"),
+                    () -> assertThat(secondPage.get(0).getTitle()).isEqualTo("Title11")
+            );
+        }
+
+        @Test
+        void 게시글이_없는_페이지를_조회하면_빈_리스트가_반환된다() {
+            // given
+            String boardId = "게시판";
+            int nonExistentPage = 999;
+
+            // when
+            List<PostListResponse> posts = postService.getPostsByBoardId(boardId, nonExistentPage);
+
+            // then
+            assertThat(posts.size()).isEqualTo(0);
+        }
+    }
+
+    @Nested
     class 게시글_수정_테스트 {
 
         @Test
@@ -23,7 +106,7 @@ class PostServiceIntegrationTest extends ServiceContext {
             // given
             UUID memberId = UUID.randomUUID();
             Post post = postRepository.save(new Post(
-                    null, memberId, "게시판", "Title1", "Content1",1L
+                    null, memberId, "게시판", "Title1", "Content1",LocalDateTime.now(),1L
             ));
 
             // when
@@ -46,7 +129,7 @@ class PostServiceIntegrationTest extends ServiceContext {
             UUID memberId = UUID.randomUUID();
             UUID otherMemberId = UUID.randomUUID();
             Post post = postRepository.save(new Post(
-                    null, memberId, "게시판", "Title1", "Content1",1L
+                    null, memberId, "게시판", "Title1", "Content1",LocalDateTime.now(),1L
             ));
 
             // expected

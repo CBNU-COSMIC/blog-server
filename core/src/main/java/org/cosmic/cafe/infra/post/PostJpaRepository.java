@@ -1,6 +1,8 @@
 package org.cosmic.cafe.infra.post;
 
 import org.cosmic.cafe.infra.post.entity.PostEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -10,4 +12,5 @@ public interface PostJpaRepository extends JpaRepository<PostEntity, UUID> {
     List<PostEntity> findByTitle(String title);
     List<PostEntity> findByTitleContaining(String title);
     List<PostEntity> findByBoardId(String id);
+    Page<PostEntity> findByBoardIdOrderByCreatedAtDesc(String boardId, Pageable pageable);
 }
