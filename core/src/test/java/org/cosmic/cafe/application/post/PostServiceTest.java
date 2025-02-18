@@ -1,6 +1,7 @@
 package org.cosmic.cafe.application.post;
 
 import org.cosmic.cafe.application.post.dto.PostCreationPayload;
+import org.cosmic.cafe.application.post.dto.PostDetailResponse;
 import org.cosmic.cafe.application.post.dto.PostListResponse;
 import org.cosmic.cafe.context.ServiceContext;
 import org.cosmic.cafe.domain.post.Post;
@@ -15,6 +16,9 @@ import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import java.util.UUID;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -60,12 +64,19 @@ class PostServiceIntegrationTest extends ServiceContext {
             // then
             assertThat(foundPost.getId()).isEqualTo(post.getId());
             assertThat(foundPost.getTitle()).isEqualTo(post.getTitle());
+          
+            PostDetailResponse foundPost = postService.getPostDetail(post.getId());
+
+            // then
+            assertThat(foundPost.getTitle()).isEqualTo(post.getTitle());
+            assertThat(foundPost.getContent()).isEqualTo(post.getContent());
         }
 
         @Test
         void 존재하지_않는_게시글을_조회하면_예외가_발생한다() {
             // expect
             assertThatThrownBy(() -> postService.getPost(UUID.randomUUID()))
+            assertThatThrownBy(() -> postService.getPostDetail(UUID.randomUUID()))
                     .isInstanceOf(NotFoundException.class)
                     .hasMessageContaining("게시글이 존재하지 않습니다.");
         }

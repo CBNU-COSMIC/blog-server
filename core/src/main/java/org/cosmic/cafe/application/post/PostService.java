@@ -1,14 +1,19 @@
 package org.cosmic.cafe.application.post;
 
 import lombok.RequiredArgsConstructor;
+
 import org.cosmic.cafe.application.post.dto.PostCreationPayload;
 import org.cosmic.cafe.application.post.dto.PostDetailResponse;
 import org.cosmic.cafe.application.post.dto.PostListResponse;
+import org.cosmic.cafe.application.post.dto.PostDetailResponse;
+import org.cosmic.cafe.application.post.dto.PostListResponse;
+
 import org.cosmic.cafe.domain.post.Post;
 import org.cosmic.cafe.domain.post.PostRepository;
 import org.cosmic.cafe.domain.post.exception.PostErrorCode;
 import org.cosmic.cafe.exception.type.BadRequestException;
 import org.cosmic.cafe.exception.type.NotFoundException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +24,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -98,5 +106,10 @@ public class PostService {
         }
 
         postRepository.deleteById(postId);
+    }
+  
+    private Post getPostById(UUID postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new NotFoundException("게시글이 존재하지 않습니다.", PostErrorCode.NOT_FOUND));
     }
 }

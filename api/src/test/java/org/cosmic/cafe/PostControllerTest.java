@@ -5,6 +5,7 @@ import org.cosmic.cafe.application.post.dto.PostDetailResponse;
 import org.cosmic.cafe.application.post.dto.PostListResponse;
 import org.cosmic.cafe.context.ControllerTest;
 import org.cosmic.cafe.domain.post.Post;
+import org.cosmic.cafe.context.ControllerTest;
 import org.cosmic.cafe.dto.LoginPayload;
 import org.cosmic.cafe.domain.member.Role;
 import org.cosmic.cafe.dto.PostUpdateRequest;
@@ -19,6 +20,10 @@ import java.util.UUID;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
