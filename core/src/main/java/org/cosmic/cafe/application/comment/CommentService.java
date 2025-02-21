@@ -21,22 +21,18 @@ public class CommentService {
     private final MemberService memberService;
 
     public UUID saveComment(UUID userId, String content, UUID postId, UUID parentId) {
-
         Comment comment = createComment(userId, content, postId, parentId);
-
         return commentRepository.save(comment).getId();
     }
 
     public void deleteComment(UUID commentId, UUID memberId) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new BadRequestException("해당 댓글이 존재하지 않습니다.", CommentErrorCode.NO_SUCH_COMMENT));
+        Comment comment = getComment(commentId);
         comment.validateOwner(memberId);
         commentRepository.deleteById(commentId);
     }
 
     public CommentResponseDTO modifyComment(String content, UUID commentId, UUID memberId) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new BadRequestException("해당 댓글이 존재하지 않습니다.", CommentErrorCode.NO_SUCH_COMMENT));
+        Comment comment = getComment(commentId);
         Comment modifiedContent = comment.modifyContent(memberId, content);
         commentRepository.save(modifiedContent);
         return new CommentResponseDTO(modifiedContent, memberService.findById(modifiedContent.getUserId()));
@@ -48,8 +44,7 @@ public class CommentService {
     }
 
     public CommentResponseDTO getCommentById(UUID commentId) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new BadRequestException("해당 댓글이 존재하지 않습니다.", CommentErrorCode.NO_SUCH_COMMENT));
+        Comment comment = getComment(commentId);
         return new CommentResponseDTO(comment, memberService.findById(comment.getUserId()));
     }
 
@@ -67,5 +62,10 @@ public class CommentService {
                 .createdAt(LocalDateTime.now())
                 .build();
         return comment;
+    }
+
+    private Comment getComment(UUID commentId) {
+        return commentRepository.findById(commentId)
+                .orElseThrow(() -> new BadRequestException("해당 댓글이 존재하지 않습니다.", CommentErrorCode.NO_SUCH_COMMENT));
     }
 }
