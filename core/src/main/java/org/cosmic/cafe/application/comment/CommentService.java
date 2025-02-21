@@ -27,35 +27,34 @@ public class CommentService {
         return commentRepository.save(comment).getId();
     }
 
-    public void deleteComment(String stringCommentId, UUID memberId) {
-        UUID commentId = UUID.fromString(stringCommentId);
+    public void deleteComment(UUID commentId, UUID memberId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BadRequestException("해당 댓글이 존재하지 않습니다.", CommentErrorCode.NO_SUCH_COMMENT));
         comment.validateOwner(memberId);
         commentRepository.deleteById(commentId);
     }
 
-    public CommentResponseDTO modifyComment(String content, String commentId, UUID memberId) {
-        Comment comment = commentRepository.findById(UUID.fromString(commentId))
+    public CommentResponseDTO modifyComment(String content, UUID commentId, UUID memberId) {
+        Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BadRequestException("해당 댓글이 존재하지 않습니다.", CommentErrorCode.NO_SUCH_COMMENT));
         Comment modifiedContent = comment.modifyContent(memberId, content);
         commentRepository.save(modifiedContent);
         return new CommentResponseDTO(modifiedContent, memberService.findById(modifiedContent.getUserId()));
     }
 
-    public List<CommentResponseDTO> getCommentsByPostId(String postId) {
-        List<Comment> comments = commentRepository.findByPostId(UUID.fromString(postId));
+    public List<CommentResponseDTO> getCommentsByPostId(UUID postId) {
+        List<Comment> comments = commentRepository.findByPostId(postId);
         return comments.stream().map(comment -> new CommentResponseDTO(comment, memberService.findById(comment.getUserId()))).toList();
     }
 
-    public CommentResponseDTO getCommentById(String commentId) {
-        Comment comment = commentRepository.findById(UUID.fromString(commentId))
+    public CommentResponseDTO getCommentById(UUID commentId) {
+        Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BadRequestException("해당 댓글이 존재하지 않습니다.", CommentErrorCode.NO_SUCH_COMMENT));
         return new CommentResponseDTO(comment, memberService.findById(comment.getUserId()));
     }
 
-    public List<CommentResponseDTO> getCommentByParentId(String parentId) {
-        List<Comment> comments = commentRepository.findByParentId(UUID.fromString(parentId));
+    public List<CommentResponseDTO> getCommentByParentId(UUID parentId) {
+        List<Comment> comments = commentRepository.findByParentId(parentId);
         return comments.stream().map(comment -> new CommentResponseDTO(comment, memberService.findById(comment.getUserId()))).toList();
     }
 
