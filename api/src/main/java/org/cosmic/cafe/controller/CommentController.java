@@ -6,7 +6,6 @@ import org.cosmic.cafe.application.comment.dto.CommentResponseDTO;
 import org.cosmic.cafe.application.comment.dto.ModifyCommentDTO;
 import org.cosmic.cafe.application.comment.dto.SaveCommentDTO;
 import org.cosmic.cafe.controller.annotation.Login;
-import org.cosmic.cafe.domain.Comment.Comment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,31 +26,31 @@ public class CommentController {
     }
 
     @DeleteMapping("{commentId}")
-    public ResponseEntity<Void> deleteComment(@PathVariable("commentId")String commentId, @Login UUID memberId){
-        commentService.deleteComment(commentId,memberId);
+    public ResponseEntity<Void> deleteComment(@PathVariable("commentId") UUID commentId, @Login UUID memberId) {
+        commentService.deleteComment(commentId, memberId);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("{commentId}")
-    public ResponseEntity<CommentResponseDTO> modifyComment(@RequestBody ModifyCommentDTO modifyCommentDTO, @PathVariable("commentId")String commentId, @Login UUID memberId){
-        CommentResponseDTO comment = commentService.modifyComment(modifyCommentDTO.getContent(),commentId,memberId);
+    public ResponseEntity<CommentResponseDTO> modifyComment(@RequestBody ModifyCommentDTO modifyCommentDTO, @PathVariable("commentId") UUID commentId, @Login UUID memberId) {
+        CommentResponseDTO comment = commentService.modifyComment(modifyCommentDTO.getContent(), commentId, memberId);
         return ResponseEntity.ok(comment);
     }
 
     @GetMapping("/postId/{postId}")
-    public ResponseEntity<List<CommentResponseDTO>> getCommentsByPostId(@PathVariable("postId")String postId){
+    public ResponseEntity<List<CommentResponseDTO>> getCommentsByPostId(@PathVariable("postId") UUID postId) {
         List<CommentResponseDTO> comments = commentService.getCommentsByPostId(postId);
         return ResponseEntity.ok(comments);
     }
 
     @GetMapping("/commentId/{commentId}")
-    public ResponseEntity<CommentResponseDTO> getCommentById(@PathVariable("commentId")String commentId){
+    public ResponseEntity<CommentResponseDTO> getCommentById(@PathVariable("commentId") UUID commentId) {
         CommentResponseDTO comment = commentService.getCommentById(commentId);
         return ResponseEntity.ok(comment);
     }
 
     @GetMapping("/parentId/{parentId}")
-    public ResponseEntity<List<CommentResponseDTO>> getCommentByParentId(@PathVariable("parentId")String parentId){
+    public ResponseEntity<List<CommentResponseDTO>> getCommentByParentId(@PathVariable("parentId") UUID parentId) {
         List<CommentResponseDTO> comments = commentService.getCommentByParentId(parentId);
         return ResponseEntity.ok(comments);
     }
