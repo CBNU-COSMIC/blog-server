@@ -100,7 +100,7 @@ public class CommentServiceTest extends ServiceContext {
             //given
             UUID memberId = UUID.randomUUID();
             Comment savedComment = commentRepository.save(Comment.builder().userId(memberId).content("content").build());
-            String commentId = savedComment.getId().toString();
+            UUID commentId = savedComment.getId();
 
             //when
             commentService.deleteComment(commentId,memberId);
@@ -116,7 +116,7 @@ public class CommentServiceTest extends ServiceContext {
             //given
             UUID memberId = UUID.randomUUID();
             Comment savedComment = commentRepository.save(Comment.builder().userId(memberId).content("content").build());
-            String commentId = savedComment.getId().toString();
+            UUID commentId = savedComment.getId();
 
             //expect
             Assertions.assertThrows(BadRequestException.class,()->commentService.deleteComment(commentId,UUID.randomUUID()));
@@ -130,7 +130,7 @@ public class CommentServiceTest extends ServiceContext {
             String commentId = savedComment.getId().toString();
 
             //expect
-            Assertions.assertThrows(BadRequestException.class, ()->commentService.deleteComment(UUID.randomUUID().toString(),memberId));
+            Assertions.assertThrows(BadRequestException.class, ()->commentService.deleteComment(UUID.randomUUID(),memberId));
         }
     }
 
@@ -142,13 +142,13 @@ public class CommentServiceTest extends ServiceContext {
             //given
             UUID memberId = UUID.randomUUID();
             Comment savedComment = commentRepository.save(Comment.builder().userId(memberId).content("content").build());
-            String commentId = savedComment.getId().toString();
+            UUID commentId = savedComment.getId();
 
             //when
             commentService.modifyComment("new content",commentId,memberId);
 
             //then
-            assertThat(commentRepository.findById(UUID.fromString(commentId)).orElse(null).getContent()).isEqualTo("new content");
+            assertThat(commentRepository.findById(commentId).orElse(null).getContent()).isEqualTo("new content");
         }
 
         @Test
@@ -156,7 +156,7 @@ public class CommentServiceTest extends ServiceContext {
             //given
             UUID memberId = UUID.randomUUID();
             Comment savedComment = commentRepository.save(Comment.builder().userId(memberId).content("content").build());
-            String commentId = savedComment.getId().toString();
+            UUID commentId = savedComment.getId();
 
             //expect
             Assertions.assertThrows(BadRequestException.class,()->commentService.modifyComment("new content",commentId,UUID.randomUUID()));
@@ -167,10 +167,10 @@ public class CommentServiceTest extends ServiceContext {
             //given
             UUID memberId = UUID.randomUUID();
             Comment savedComment = commentRepository.save(Comment.builder().userId(memberId).content("content").build());
-            String commentId = savedComment.getId().toString();
+            UUID commentId = savedComment.getId();
 
             //expect
-            Assertions.assertThrows(BadRequestException.class, ()->commentService.modifyComment("new content",UUID.randomUUID().toString(),memberId));
+            Assertions.assertThrows(BadRequestException.class, ()->commentService.modifyComment("new content",UUID.randomUUID(),memberId));
         }
     }
 }
