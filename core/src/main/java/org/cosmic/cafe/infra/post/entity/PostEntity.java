@@ -1,11 +1,13 @@
 package org.cosmic.cafe.infra.post.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import org.cosmic.cafe.domain.post.Post;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -13,7 +15,8 @@ import java.util.UUID;
 @Getter
 public class PostEntity {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private UUID id;
 
     private String boardId;
@@ -24,7 +27,8 @@ public class PostEntity {
 
     private Long hits;
 
-    protected PostEntity(){}
+    protected PostEntity() {
+    }
 
     @Builder
     public PostEntity(UUID id, String boardId, String title, String content, Long hits) {

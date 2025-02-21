@@ -2,14 +2,13 @@ package org.cosmic.cafe.application.member;
 
 import org.cosmic.cafe.domain.member.Member;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @Service
 public class MemberService {
 
-    public Member findById(UUID id){
+    public Member findById(UUID id) {
         return null;
     }
 }
