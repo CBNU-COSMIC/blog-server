@@ -3,7 +3,7 @@ package org.cosmic.cafe;
 import org.springframework.stereotype.Service;
 
 @Service
-public class NoticeCrawlingService implements CrawlingService {
+public class PostCrawlingService implements CrawlingService {
     @Override
     public void crawlPosts() {
 
