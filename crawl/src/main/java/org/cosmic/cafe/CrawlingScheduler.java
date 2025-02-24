@@ -10,7 +10,8 @@ public class CrawlingScheduler {
 
     private final CrawlingService crawlingService;
 
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(fixedRate = 5000)
+//    @Scheduled(cron = "0 0 * * * *")
     public void crawling() {
         crawlingService.crawlPosts();
     }
