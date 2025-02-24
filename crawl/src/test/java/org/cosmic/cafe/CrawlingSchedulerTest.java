@@ -20,7 +20,7 @@ public class CrawlingSchedulerTest {
     public void 크롤링은_1시간마다_실행된다() {
         await().atMost(Duration.ofSeconds(10))
                 .untilAsserted(() -> {
-                    verify(crawlingScheduler, atLeast(2)).crawling();
+                    verify(crawlingScheduler, atLeast(3)).crawling();
                 });
     }
 }
