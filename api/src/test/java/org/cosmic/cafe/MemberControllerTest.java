@@ -77,20 +77,26 @@ public class MemberControllerTest extends ControllerTest {
         @Test
         void 회원_목록_조회_요청은_200을_반환한다() throws Exception {
             // given
+            UUID memberId = UUID.randomUUID();
+            MockHttpSession session = new MockHttpSession();
+            session.setAttribute("loginPayload", new LoginPayload(memberId, Role.GUEST));
+
             List<Member> members = List.of(
-                    new Member(UUID.randomUUID(), "duddms", "testid1", "nickname1", "Password11!", "MEMBER",
+                    new Member(UUID.randomUUID(), "일", "testid1", "nickname1", "Password11!", "MEMBER",
                             "avatarUrl", "1234567890", "1234567", null, "email1@test.com"),
-                    new Member(UUID.randomUUID(), "thd", "testid2", "nickname2", "Password22!", "GUEST", "avatarUrl",
+                    new Member(UUID.randomUUID(), "이", "testid2", "nickname2", "Password22!", "GUEST", "avatarUrl",
                             "7890123456", "7654321", null, "email2@test.com")
             );
 
             given(memberService.findAll()).willReturn(members);
 
+
             // when & then
             mockMvc.perform(get("/api/members")
-                            .contentType("application/json"))
+                    .session(session)
+                    .contentType("application/json"))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$[0].name").value("testName1"))
+                    .andExpect(jsonPath("$[0].name").value("일"))
                     .andExpect(jsonPath("$[1].nickname").value("nickname2"));
         }
     }
@@ -102,13 +108,17 @@ public class MemberControllerTest extends ControllerTest {
         void 정상적인_회원_수정_요청은_200을_반환한다() throws Exception {
             // given
             UUID memberId = UUID.randomUUID();
+            MockHttpSession session = new MockHttpSession();
+            session.setAttribute("loginPayload", new LoginPayload(memberId, Role.GUEST));
+
             MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest("updatedName", "updatedNickname",
                     "111111111", null, "updatedEmail");
 
             // when & then
             mockMvc.perform(put("/api/members/{id}", memberId)
-                            .contentType("application/json")
-                            .content(objectMapper.writeValueAsString(memberUpdateRequest)))
+                    .session(session)
+                    .contentType("application/json")
+                    .content(objectMapper.writeValueAsString(memberUpdateRequest)))
                     .andExpect(status().isOk());
         }
     }
@@ -120,10 +130,13 @@ public class MemberControllerTest extends ControllerTest {
         void 정상적인_회원_삭제_요청은_200을_반환한다() throws Exception {
             // given
             UUID memberId = UUID.randomUUID();
+            MockHttpSession session = new MockHttpSession();
+            session.setAttribute("loginPayload", new LoginPayload(memberId, Role.GUEST));
 
             // when & then
             mockMvc.perform(delete("/api/members/{id}", memberId)
-                            .contentType("application/json"))
+                    .session(session)
+                    .contentType("application/json"))
                     .andExpect(status().isOk());
         }
     }
@@ -134,13 +147,18 @@ public class MemberControllerTest extends ControllerTest {
         @Test
         void 정상적인_회원_역할_수정_요청은_200을_반환한다() throws Exception {
             // given
+            UUID memberId = UUID.randomUUID();
+            MockHttpSession session = new MockHttpSession();
+            session.setAttribute("loginPayload", new LoginPayload(memberId, Role.GUEST));
+
             String nickname = "testNickname";
             String role = "ADMIN";
 
             // when & then
             mockMvc.perform(put("/api/members/{nickname}/role", nickname)
-                            .param("role", role)
-                            .contentType("application/json"))
+                    .session(session)
+                    .param("role", role)
+                    .contentType("application/json"))
                     .andExpect(status().isOk());
         }
     }
