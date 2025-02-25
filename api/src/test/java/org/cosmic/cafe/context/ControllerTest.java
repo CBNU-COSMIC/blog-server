@@ -5,6 +5,7 @@ import org.cosmic.cafe.application.AuthService;
 import org.cosmic.cafe.application.member.MemberService;
 import org.cosmic.cafe.application.post.PostService;
 import org.cosmic.cafe.controller.AuthController;
+import org.cosmic.cafe.controller.MemberController;
 import org.cosmic.cafe.controller.PostController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,7 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest({AuthController.class, PostController.class})
+@WebMvcTest({AuthController.class, PostController.class, MemberController.class})
 @AutoConfigureMockMvc
 public abstract class ControllerTest {
 
