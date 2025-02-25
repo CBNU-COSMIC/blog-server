@@ -2,6 +2,7 @@ package org.cosmic.cafe.context;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cosmic.cafe.application.AuthService;
+import org.cosmic.cafe.application.member.MemberService;
 import org.cosmic.cafe.application.post.PostService;
 import org.cosmic.cafe.controller.AuthController;
 import org.cosmic.cafe.controller.PostController;
@@ -23,6 +24,9 @@ public abstract class ControllerTest {
 
     @MockitoBean
     protected PostService postService;
+
+    @MockitoBean
+    protected MemberService memberService;
 
     @MockitoBean
     protected AuthenticationContext authenticationContext;
