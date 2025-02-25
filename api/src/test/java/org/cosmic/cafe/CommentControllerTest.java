@@ -1,20 +1,19 @@
 package org.cosmic.cafe;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.UUID;
 import org.cosmic.cafe.application.comment.dto.ModifyCommentDTO;
 import org.cosmic.cafe.application.comment.dto.SaveCommentDTO;
 import org.cosmic.cafe.context.ControllerTest;
+import org.cosmic.cafe.domain.member.Role;
 import org.cosmic.cafe.dto.LoginPayload;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpSession;
-import org.cosmic.cafe.domain.member.Role;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-
-
-import java.util.UUID;
 
 public class CommentControllerTest extends ControllerTest {
 
