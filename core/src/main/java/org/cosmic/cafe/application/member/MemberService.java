@@ -23,12 +23,18 @@ public class MemberService {
     public void createMember(MemberCreationPayload memberPayload){
         validateDuplicateMember(memberPayload.memberId());
         validateDuplicateNickname(memberPayload.nickname());
+
+        String password = memberPayload.password();
+        if (password.length() < 8 || password.length() > 16) {
+            throw new IllegalArgumentException("비밀번호는 8자 이상 16자 이하여야 합니다.");
+        }
+
         Member member = new Member(
             null,
             memberPayload.name(),
             memberPayload.memberId(),
             memberPayload.nickname(),
-            encryptPassword(memberPayload.password()),
+            encryptPassword(password),
             memberPayload.role(),
             memberPayload.avatar(),
             memberPayload.phoneNumber(),
@@ -51,6 +57,8 @@ public class MemberService {
                 throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
             });
     }
+
+
 
     private String encryptPassword(String password){
 

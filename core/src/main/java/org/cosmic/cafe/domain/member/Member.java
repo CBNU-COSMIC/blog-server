@@ -27,7 +27,6 @@ public class Member {
     public static final String ERROR_MEMBERID_IS_REQUIRED = "아이디는 필수 입력값입니다.";
     public static final String ERROR_MEMBERID_INVALID_FORMAT = "아이디는 영어 소문자와 숫자만 사용할 수 있습니다.";
     public static final String ERROR_PASSWORD_IS_REQUIRED = "비밀번호는 필수 입력값입니다.";
-    public static final String ERROR_PASSWORD_LENGTH_REQUIRED = "비밀번호는 8자 이상 16자 이하여야 합니다.";
     public static final String ERROR_PASSWORD_INVALID_FORMAT = "비밀번호는 소문자, 대문자, 숫자, 기호를 모두 포함해야 합니다.";
     public static final String ERROR_STUDENTNUMBER_IS_REQUIRED = "학번은 필수 입력값입니다.";
     public static final String ERROR_STUDENTNUMBER_LENGTH_REQUIRED = "학번은 6~11자 사이의 숫자여야 합니다.";
@@ -85,9 +84,6 @@ public class Member {
     private void validatePassword(String password){
         if(password == null || password.isEmpty() || password.isBlank()){
             throw new BadRequestException(ERROR_PASSWORD_IS_REQUIRED, MemberErrorCode.REQUIRED_VALUE);
-        }
-        if(password.length() < 8 || password.length() > 16){
-            throw new BadRequestException(ERROR_PASSWORD_LENGTH_REQUIRED, MemberErrorCode.INVALID_PASSWORD_LENGTH);
         }
         if(!(password.matches(".*[a-z].*") &&
             password.matches(".*[A-Z].*") &&
