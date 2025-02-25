@@ -44,20 +44,20 @@ public class MemberControllerTest extends ControllerTest {
         @Test
         void 회원_상세_조회_요청은_200을_반환한다() throws Exception {
             // given
-            String memberId = "testId";
+            String nickname = "testname";
             Member member = new Member(
                 UUID.randomUUID(), "testName", "testid", "testname",
                 "testPassword1!", "USER", "avatarUrl", "1234567890",
                 "12345678", null, "testemail@test.com");
             MemberDetailResponse expectedResponse = MemberDetailResponse.of(member);
 
-            given(memberService.getMemberDetail(memberId)).willReturn(expectedResponse);
+            given(memberService.getMemberDetail(nickname)).willReturn(expectedResponse);
 
             // when & then
-            mockMvc.perform(get("/api/members/{memberId}", memberId)
+            mockMvc.perform(get("/api/members/{nickname}", nickname)
                     .contentType("application/json"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.memberId").value("testId"))
+                .andExpect(jsonPath("$.nickname").value("testname"))
                 .andExpect(jsonPath("$.name").value("testName"));
         }
 

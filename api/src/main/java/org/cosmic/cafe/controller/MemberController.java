@@ -31,9 +31,9 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{memberId}")
-    public ResponseEntity<MemberDetailResponse> getMember(@PathVariable String memberId) {
-        MemberDetailResponse response = memberService.getMemberDetail(memberId);
+    @GetMapping("/{nickname}")
+    public ResponseEntity<MemberDetailResponse> getMember(@PathVariable String nickname) {
+        MemberDetailResponse response = memberService.getMemberDetail(nickname);
         return ResponseEntity.ok(response);
     }
 

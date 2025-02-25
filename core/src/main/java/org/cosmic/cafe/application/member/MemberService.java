@@ -112,8 +112,8 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public MemberDetailResponse getMemberDetail(String memberId) {
-        Member member = memberRepository.findByMemberId(memberId)
+    public MemberDetailResponse getMemberDetail(String nickname) {
+        Member member = memberRepository.findByMemberId(nickname)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
         return MemberDetailResponse.of(member);

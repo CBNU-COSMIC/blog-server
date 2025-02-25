@@ -15,6 +15,5 @@ public interface MemberRepository {
 
     List<Member> findAll();
 
-    //Member merge(Member member);
 
 }
