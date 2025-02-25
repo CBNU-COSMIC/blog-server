@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    active: test
+
+crawling:
+  fixedRate: 5000    # 5초
