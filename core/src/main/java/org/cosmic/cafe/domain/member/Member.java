@@ -10,17 +10,17 @@ import org.cosmic.cafe.infra.member.entity.MemberEntity;
 
 @Getter
 public class Member {
-    private final UUID id;
-    private final String name;
-    private final String memberId;
-    private final String nickname;
-    private final String password;
-    private final String role;
-    private final String avatar;
-    private final String phoneNumber;
-    private final String studentNumber;
-    private final LocalDateTime birth;
-    private final String email;
+    private UUID id;
+    private String name;
+    private String memberId;
+    private String nickname;
+    private String password;
+    private String role;
+    private String avatar;
+    private String phoneNumber;
+    private String studentNumber;
+    private LocalDateTime birth;
+    private String email;
 
     public static final String ERROR_NAME_IS_REQUIRED = "이름은 필수 입력값입니다.";
     public static final String ERROR_NAME_INVALID_FORMAT = "이름은 영어나 한글만 사용할 수 있습니다.";
