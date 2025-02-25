@@ -1,10 +1,12 @@
 package org.cosmic.cafe.infra.member.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Builder;
@@ -23,6 +25,8 @@ public class MemberEntity {
     private UUID id;
     private String name;
     private String memberId;
+
+    @Column(unique = true)
     private String nickname;
     private String password;
     private String role;
@@ -31,6 +35,10 @@ public class MemberEntity {
     private String studentNumber;
     private LocalDateTime birth;
     private String email;
+
+    @Version
+    private Integer version;
+
 
     @Builder
     public MemberEntity(UUID id, String name, String memberId, String nickname, String password,
@@ -47,6 +55,7 @@ public class MemberEntity {
         this.studentNumber = studentNumber;
         this.birth = birth;
         this.email = email;
+        this.version=0;
     }
 
     public static MemberEntity of(Member member) {
@@ -64,4 +73,5 @@ public class MemberEntity {
             .email(member.getEmail())
             .build();
     }
+
 }
