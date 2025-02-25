@@ -31,6 +31,8 @@ public class CommentCoreRepository implements CommentRepository {
 
     @Override
     public List<Comment> findByPostId(UUID postId) {
+        // TODO: 시간별로 정렬
+        // TODO: 정렬이 제대로 되었는지 테스트
         List<CommentEntity> commentEntities = commentJpaRepository.findByPostId(postId);
 
         return commentEntities.stream()
