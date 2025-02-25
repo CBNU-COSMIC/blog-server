@@ -7,6 +7,8 @@ java {
 dependencies {
     // jpa
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+    implementation('org.springframework.security:spring-security-crypto:5.7.0')
+    implementation ('org.springframework.boot:spring-boot-starter-security')
 
     // db
     testRuntimeOnly('com.h2database:h2')
