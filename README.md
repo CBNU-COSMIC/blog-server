@@ -106,6 +106,6 @@
 <br><br>
 
 ## 😊 프로젝트 팀원
-| 오민석 (팀장) | 신소희 | 오현지 | 정선웅 | 
-|:---:| :---: | :---: | :---: |
-|<a href="https://github.com/minseok-oh"><img src="https://avatars.githubusercontent.com/u/68336833?v=4" width="90px" height="90px"/></a> | <a href="https://github.com/sinsohi"><img src="https://avatars.githubusercontent.com/u/136775478?v=4" width="90px" height="90px"/></a>|<a href="https://github.com/Hyunjiiing"><img src="https://avatars.githubusercontent.com/u/107828202?v=4" width="90px" height="90px"/></a> | <a href="https://github.com/jeongseonwoong"><img src="https://avatars.githubusercontent.com/u/84301208?v=4" width="90px" height="90px"/></a>|
+| 오민석 (팀장) | 송영은 | 신소희 | 오현지 | 정선웅 | 
+|:---:| :---: | :---: | :---: | :---: |
+|<a href="https://github.com/minseok-oh"><img src="https://avatars.githubusercontent.com/u/68336833?v=4" width="90px" height="90px"/></a> |<a href="https://github.com/songyeongeun"><img src="https://avatars.githubusercontent.com/u/107869024?v=4" width="90px" height="90px"/></a>| <a href="https://github.com/sinsohi"><img src="https://avatars.githubusercontent.com/u/136775478?v=4" width="90px" height="90px"/></a>|<a href="https://github.com/Hyunjiiing"><img src="https://avatars.githubusercontent.com/u/107828202?v=4" width="90px" height="90px"/></a> | <a href="https://github.com/jeongseonwoong"><img src="https://avatars.githubusercontent.com/u/84301208?v=4" width="90px" height="90px"/></a>|
