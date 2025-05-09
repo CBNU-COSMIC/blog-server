@@ -7,10 +7,13 @@ import java.util.UUID;
 public interface MemberRepository {
     Optional<Member> findById(UUID id);
     Optional<Member> findByMemberId(String memberId);
+    Optional<Member> findByNickname(String nickname);
 
     Member save(Member member);
 
     void deleteById(UUID id);
 
     List<Member> findAll();
+
+
 }

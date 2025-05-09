@@ -1,14 +1,13 @@
 package org.cosmic.cafe.infra.member;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.cosmic.cafe.domain.member.Member;
 import org.cosmic.cafe.domain.member.MemberRepository;
 import org.cosmic.cafe.infra.member.entity.MemberEntity;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
@@ -35,6 +34,11 @@ public class MemberCoreRepository implements MemberRepository {
     }
 
     @Override
+    public Optional<Member> findByNickname(String nickname){
+        return memberJpaRepository.findByNickname(nickname).map(Member::of);
+    }
+
+    @Override
     public List<Member> findAll() {
         List<MemberEntity> memberEntities = memberJpaRepository.findAll();
 
@@ -47,6 +51,7 @@ public class MemberCoreRepository implements MemberRepository {
     public void deleteById(UUID id) {
         memberJpaRepository.deleteById(id);
     }
+
 }
 
 
